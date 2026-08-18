@@ -248,7 +248,7 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
   };
 
   // File Resume Import flow triggers
-  const handleResumeFileSelect = (e: React.ChangeEvent<HTMLInputElement> | React.DragEvent) => {
+  const handleResumeFileSelect = async (e: React.ChangeEvent<HTMLInputElement> | React.DragEvent) => {
     e.preventDefault();
     let file: File | null = null;
     if ('files' in e.target && e.target.files) {
@@ -263,64 +263,35 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
         setFileError("Unsupported file type. Please upload a PDF or DOCX file.");
         return;
       }
+      if (file.size > 10 * 1024 * 1024) {
+        setFileError("This file is larger than 10MB. Please upload a smaller resume.");
+        return;
+      }
       setFileError(null);
       setCurrentPath('import-processing');
-      
-      // Simulate resume deconstruction scan
-      setTimeout(() => {
-        // Populate parsed structures
-        setProfile({
-          name: '',
-          title: '',
-          photo: '',
-          location: ''
-        });
-        setAbout('');
-        setSkills([]);
-        setProjects([
-          {
-            title: '',
-            description: '',
-            image: '',
-            tags: []
-          },
-          {
-            title: '',
-            description: '',
-            image: '',
-            tags: []
-          }
-        ]);
-        setExperience([
-          {
-            company: '',
-            role: '',
-            period: '',
-            description: ''
-          },
-          {
-            company: '',
-            role: '',
-            period: '',
-            description: ''
-          }
-        ]);
-        setEducation([
-          {
-            school: '',
-            degree: '',
-            period: ''
-          }
-        ]);
-        setCertificates([
-          {
-            title: '',
-            issuer: '',
-            date: ''
-          }
-        ]);
+
+      try {
+        const formData = new FormData();
+        formData.append('resume', file);
+        const response = await fetch('/api/resume/parse', { method: 'POST', body: formData });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || 'We could not read this resume. Please try again.');
+
+        const data = result.data as PortfolioData;
+        setProfile({ ...data.profile, photo: '' });
+        setAbout(data.about || '');
+        setSkills(data.skills || []);
+        setProjects(data.projects || []);
+        setExperience(data.experience || []);
+        setEducation(data.education || []);
+        setCertificates(data.certificates || []);
+        setContact(data.contact || { email: '', phone: '', address: '' });
+        setSocialLinks(data.socialLinks || {});
         setCurrentPath('import-review');
-      }, 3500);
+      } catch (error) {
+        setFileError(error instanceof Error ? error.message : 'Resume parsing failed. Please try again.');
+        setCurrentPath('import');
+      }
     }
   };
 
@@ -455,8 +426,8 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
                 <FileText size={48} strokeWidth={1} style={{ color: 'var(--accent-color)' }} />
                 <div className="scanner-lines" />
               </div>
-              <div className="scanner-text">Deconstructing Story...</div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Mapping components, roles, and creative attributes</p>
+              <div className="scanner-text">Reading your resume with AI...</div>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Extracting profile, projects, experience, education, skills and links</p>
             </motion.div>
           )}
 
