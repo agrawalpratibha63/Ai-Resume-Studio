@@ -56,18 +56,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ? { inlineData: { mimeType: 'application/pdf', data: bytes.toString('base64') } }
       : { text: `Resume text extracted from DOCX:\n\n${(await mammoth.extractRawText({ buffer: bytes })).value}` };
 
-    const model = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
-    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
-      body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }, documentPart] }], generationConfig: { responseMimeType: 'application/json', responseSchema: portfolioSchema, temperature: 0.1 } }),
-      signal: AbortSignal.timeout(55_000),
-    });
+    const models = [...new Set([process.env.GEMINI_MODEL, 'gemini-2.5-flash-lite'].filter(Boolean))] as string[];
+    let payload: any;
+    let providerStatus = 502;
 
-    const payload = await aiResponse.json();
-    if (!aiResponse.ok) {
-      console.error('Gemini API error', payload?.error?.message || aiResponse.status);
-      return res.status(502).json({ error: 'The AI service could not process this resume. Please retry shortly.' });
+    for (const model of models) {
+      const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
+        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }, documentPart] }], generationConfig: { responseMimeType: 'application/json', responseSchema: portfolioSchema, temperature: 0.1 } }),
+        signal: AbortSignal.timeout(55_000),
+      });
+
+      payload = await aiResponse.json();
+      providerStatus = aiResponse.status;
+      if (aiResponse.ok) break;
+      console.error('Gemini API error', { model, status: aiResponse.status, message: payload?.error?.message });
+    }
+
+    if (!payload?.candidates) {
+      const hint = providerStatus === 401 || providerStatus === 403
+        ? 'Please verify the Gemini API key in Vercel.'
+        : providerStatus === 429
+          ? 'The Gemini quota is temporarily exhausted. Please retry later.'
+          : 'The AI provider rejected the request.';
+      return res.status(502).json({ error: `${hint} (provider status ${providerStatus})` });
     }
 
     const rawText = payload?.candidates?.[0]?.content?.parts?.map((part: { text?: string }) => part.text || '').join('');
