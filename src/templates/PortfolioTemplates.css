@@ -1,0 +1,308 @@
+/* =========================================================================
+   PORTFOLIO TEMPLATES — shared engine styles
+   Each theme-<id> scopes palette via CSS custom properties set inline.
+   ========================================================================= */
+
+.pt-root {
+  position: relative;
+  background: var(--pt-bg);
+  color: var(--pt-text);
+  font-family: var(--pt-font);
+  min-height: 100vh;
+  overflow-x: hidden;
+  isolation: isolate;
+}
+.pt-uppercase h1, .pt-uppercase h2, .pt-uppercase h3, .pt-uppercase .pt-kicker { text-transform: uppercase; }
+
+.pt-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; transform-origin: 0%; z-index: 200; }
+
+.pt-kicker {
+  display: inline-block;
+  font-family: var(--pt-font);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--pt-accent);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+.pt-mono-tag { font-family: 'Fira Code', monospace; font-size: 0.7rem; color: var(--pt-muted); letter-spacing: 0.08em; }
+
+.pt-section {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+}
+
+.pt-about {
+  font-family: var(--pt-display);
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  line-height: 1.5;
+  font-weight: 400;
+  max-width: 820px;
+  color: var(--pt-text);
+}
+
+.pt-socials { display: flex; gap: 1.25rem; align-items: center; margin-top: 1.75rem; flex-wrap: wrap; }
+.pt-socials a { color: var(--pt-accent); text-decoration: none; opacity: 0.85; transition: opacity 0.25s, transform 0.25s; display: inline-flex; }
+.pt-socials a:hover { opacity: 1; transform: translateY(-2px); }
+
+.pt-skillrow { display: flex; flex-wrap: wrap; gap: 0.85rem; }
+.pt-skillpill {
+  padding: 0.6rem 1.3rem;
+  border: 1px solid color-mix(in srgb, var(--pt-accent) 40%, transparent);
+  border-radius: var(--pt-radius);
+  font-size: 0.9rem;
+  color: var(--pt-text);
+  background: color-mix(in srgb, var(--pt-surface) 70%, transparent);
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+.pt-skillpill:hover { border-color: var(--pt-accent); background: color-mix(in srgb, var(--pt-accent) 12%, transparent); transform: translateY(-3px); }
+
+.pt-timeline { display: flex; flex-direction: column; gap: 2.75rem; }
+.pt-exprow { position: relative; display: grid; grid-template-columns: 24px 1fr; gap: 1.5rem; padding-bottom: 2rem; border-bottom: 1px solid color-mix(in srgb, var(--pt-muted) 25%, transparent); }
+.pt-expdot { width: 12px; height: 12px; border-radius: 50%; background: var(--pt-accent); margin-top: 6px; box-shadow: 0 0 0 4px color-mix(in srgb, var(--pt-accent) 18%, transparent); }
+.pt-exphead { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; font-size: 1.15rem; }
+.pt-expcompany { color: var(--pt-accent); font-size: 0.9rem; margin: 0.35rem 0 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.pt-expdesc { color: var(--pt-muted); line-height: 1.7; font-size: 0.95rem; }
+
+.pt-credgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.pt-credtitle { font-family: var(--pt-display); font-size: 1.1rem; margin-bottom: 1.25rem; color: var(--pt-accent); }
+.pt-creditem { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1.25rem; }
+.pt-creditem strong { font-size: 1rem; }
+.pt-creditem span { font-size: 0.82rem; color: var(--pt-muted); }
+
+.pt-footer { position: relative; z-index: 2; text-align: center; padding: 7rem 2rem 5rem; }
+.pt-footer-email { display: inline-block; font-family: var(--pt-display); font-size: clamp(1.4rem, 4vw, 2.6rem); color: var(--pt-text); text-decoration: none; border-bottom: 2px solid var(--pt-accent); padding-bottom: 0.3rem; margin: 0.5rem 0; }
+.pt-footer .pt-socials { justify-content: center; margin-top: 2rem; }
+
+.pt-hero-name { font-family: var(--pt-display); font-weight: 800; font-size: clamp(2.4rem, 7vw, 5.5rem); line-height: 1.02; color: var(--pt-text); }
+.pt-hero-title { font-size: clamp(1rem, 1.6vw, 1.35rem); color: var(--pt-muted); margin-top: 1rem; font-weight: 400; }
+.pt-hero-avatar-round { width: 108px; height: 108px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pt-accent); margin-bottom: 1.5rem; }
+
+.pt-scrollcue { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--pt-muted); text-transform: uppercase; z-index: 3; }
+.pt-scrollcue span { display: inline-block; animation: pt-bounce 1.8s infinite; margin-left: 0.4rem; }
+@keyframes pt-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+.pt-hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 2; padding: 4rem 2rem; }
+
+/* --- Tilt 3D card --- */
+.tilt-card { transition: transform 0.15s ease-out; transform-style: preserve-3d; will-change: transform; }
+
+/* --- Project image common --- */
+.pt-projimgwrap { width: 100%; aspect-ratio: 16/10; overflow: hidden; border-radius: calc(var(--pt-radius) * 1); margin-bottom: 1.1rem; }
+.pt-projimg { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.pt-projcard:hover .pt-projimg { transform: scale(1.06); }
+.pt-projcard h3 { font-family: var(--pt-display); font-size: 1.15rem; margin-bottom: 0.5rem; }
+.pt-projcard p { font-size: 0.88rem; color: var(--pt-muted); line-height: 1.6; }
+.pt-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.85rem; }
+.pt-tags span { font-size: 0.65rem; font-family: 'Fira Code', monospace; border: 1px solid color-mix(in srgb, var(--pt-muted) 40%, transparent); padding: 0.2rem 0.5rem; color: var(--pt-muted); border-radius: 3px; }
+
+/* =========================================================================
+   HERO VARIANT: centered-cosmic (Zenith)
+   ========================================================================= */
+.pt-hero-cosmic { flex-direction: column; text-align: center; }
+.pt-cosmic-content { display: flex; flex-direction: column; align-items: center; }
+
+/* =========================================================================
+   HERO VARIANT: split-portrait (Ember)
+   ========================================================================= */
+.pt-hero-split { display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: 3rem; text-align: left; max-width: 1200px; margin: 0 auto; }
+.pt-hero-split-visual { position: relative; aspect-ratio: 4/5; border-radius: var(--pt-radius); overflow: hidden; background: var(--pt-surface); }
+.pt-hero-split-visual img { width: 100%; height: 100%; object-fit: cover; }
+.pt-hero-split-placeholder { width: 100%; height: 100%; background: linear-gradient(160deg, var(--pt-surface), var(--pt-bg2)); }
+.pt-hero-split-frame { position: absolute; inset: 14px; border: 1px solid color-mix(in srgb, var(--pt-accent) 55%, transparent); pointer-events: none; }
+@media (max-width: 860px) { .pt-hero-split { grid-template-columns: 1fr; } }
+
+/* =========================================================================
+   HERO VARIANT: fullbleed-glass (Glacier)
+   ========================================================================= */
+.pt-hero-fullbleed { flex-direction: column; }
+.pt-glasspanel { background: var(--pt-surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.5); border-radius: var(--pt-radius); padding: 4rem 3.5rem; text-align: center; box-shadow: 0 30px 80px -30px rgba(30,60,90,0.25); }
+.pt-hero-glasspanel { display: flex; flex-direction: column; align-items: center; }
+
+/* =========================================================================
+   HERO VARIANT: asymmetric-editorial (Obsidian)
+   ========================================================================= */
+.pt-hero-asym { flex-direction: column; align-items: flex-start; justify-content: center; max-width: 1200px; margin: 0 auto; gap: 2rem; }
+.pt-hero-asym-big { width: 100%; }
+.pt-glow-text { text-shadow: 0 0 40px color-mix(in srgb, var(--pt-accent) 65%, transparent); }
+.pt-hero-asym-side { display: flex; flex-direction: column; align-items: flex-start; gap: 0.9rem; border-left: 2px solid var(--pt-accent); padding-left: 1.5rem; }
+
+/* =========================================================================
+   HERO VARIANT: vertical-monogram (Sakura)
+   ========================================================================= */
+.pt-hero-vmono { flex-direction: column; gap: 1.25rem; text-align: center; position: relative; }
+.pt-vmono-word { position: absolute; top: 8%; font-family: var(--pt-display); font-size: clamp(3rem, 12vw, 9rem); color: color-mix(in srgb, var(--pt-accent) 14%, transparent); letter-spacing: 0.05em; white-space: nowrap; z-index: -1; user-select: none; }
+.pt-vmono-center { width: 132px; height: 132px; border-radius: 50%; overflow: hidden; border: 3px solid var(--pt-accent); box-shadow: 0 20px 50px -18px color-mix(in srgb, var(--pt-accent) 60%, transparent); }
+.pt-vmono-center img { width: 100%; height: 100%; object-fit: cover; }
+.pt-vmono-placeholder { width: 100%; height: 100%; background: linear-gradient(160deg, var(--pt-accent), var(--pt-accent2)); }
+
+/* =========================================================================
+   HERO VARIANT: schematic (Blueprint)
+   ========================================================================= */
+.pt-hero-schematic { flex-direction: column; }
+.pt-schematic-frame { position: relative; border: 1px solid color-mix(in srgb, var(--pt-accent) 45%, transparent); padding: 3.5rem 3rem; max-width: 720px; display: flex; flex-direction: column; gap: 1rem; }
+.pt-schematic-corner { position: absolute; width: 18px; height: 18px; border: 2px solid var(--pt-accent); }
+.pt-schematic-corner.tl { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.pt-schematic-corner.tr { top: -2px; right: -2px; border-left: 0; border-bottom: 0; }
+.pt-schematic-corner.bl { bottom: -2px; left: -2px; border-right: 0; border-top: 0; }
+.pt-schematic-corner.br { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+.pt-schematic-meta { display: flex; gap: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--pt-muted); flex-wrap: wrap; }
+
+/* =========================================================================
+   HERO VARIANT: showcase-rotate (Velour)
+   ========================================================================= */
+.pt-hero-showcase { flex-direction: column; position: relative; }
+.pt-showcase-ring { position: absolute; width: 620px; height: 620px; max-width: 90vw; max-height: 90vw; border: 1px dashed color-mix(in srgb, var(--pt-accent) 40%, transparent); border-radius: 50%; }
+.pt-showcase-ring::before, .pt-showcase-ring::after { content: ''; position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--pt-accent); top: 50%; left: -4px; }
+.pt-showcase-ring::after { left: auto; right: -4px; background: var(--pt-accent2); }
+.pt-showcase-center { display: flex; flex-direction: column; align-items: center; text-align: center; z-index: 2; }
+
+/* =========================================================================
+   HERO VARIANT: stacked-sunset (Solstice)
+   ========================================================================= */
+.pt-hero-sunset { flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; }
+.pt-sunset-layer { position: relative; }
+
+/* =========================================================================
+   HERO VARIANT: columns-serif (Marble)
+   ========================================================================= */
+.pt-hero-columns { display: grid; grid-template-columns: 1.3fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto; align-items: end; text-align: left; }
+.pt-columns-left { border-right: 1px solid color-mix(in srgb, var(--pt-muted) 30%, transparent); padding-right: 3rem; }
+.pt-columns-right { padding-bottom: 0.5rem; }
+.pt-columns-loc { color: var(--pt-muted); font-size: 0.85rem; margin-top: 0.5rem; letter-spacing: 0.05em; }
+@media (max-width: 860px) { .pt-hero-columns { grid-template-columns: 1fr; } .pt-columns-left { border-right: none; padding-right: 0; border-bottom: 1px solid color-mix(in srgb, var(--pt-muted) 30%, transparent); padding-bottom: 2rem; } }
+
+/* =========================================================================
+   HERO VARIANT: glitch-terminal (Nova)
+   ========================================================================= */
+.pt-hero-glitch { flex-direction: column; align-items: stretch; max-width: 900px; margin: 0 auto; gap: 0; }
+.pt-terminal-bar { display: flex; align-items: center; gap: 0.5rem; background: var(--pt-surface); border: 1px solid color-mix(in srgb, var(--pt-accent) 35%, transparent); border-bottom: none; padding: 0.7rem 1rem; font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--pt-muted); }
+.pt-terminal-bar span { width: 9px; height: 9px; border-radius: 50%; background: var(--pt-muted); opacity: 0.5; }
+.pt-terminal-bar span:first-child { background: #ff5f57; opacity: 1; }
+.pt-terminal-bar span:nth-child(2) { background: #febc2e; opacity: 1; }
+.pt-terminal-bar span:nth-child(3) { background: #28c840; opacity: 1; }
+.pt-glitch-content { border: 1px solid color-mix(in srgb, var(--pt-accent) 35%, transparent); padding: 3.5rem 2.5rem; display: flex; flex-direction: column; }
+.pt-glitch-name { position: relative; text-shadow: 2px 0 var(--pt-accent2), -2px 0 var(--pt-accent); }
+.pt-terminal-caret { display: inline-block; }
+.pt-terminal-caret::after { content: '█'; color: var(--pt-accent); animation: pt-blink 1s steps(2) infinite; margin-left: 4px; }
+@keyframes pt-blink { 50% { opacity: 0; } }
+
+/* =========================================================================
+   HERO VARIANT: organic-flow (Terra)
+   ========================================================================= */
+.pt-hero-organic { flex-direction: column; text-align: center; position: relative; }
+.pt-organic-blob-shape { position: absolute; width: 520px; height: 520px; max-width: 85vw; max-height: 85vw; background: color-mix(in srgb, var(--pt-accent) 20%, transparent); border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; filter: blur(4px); }
+.pt-organic-content { position: relative; display: flex; flex-direction: column; align-items: center; }
+.pt-organic-photo { width: 120px; height: 120px; object-fit: cover; border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; margin-bottom: 1.5rem; border: 3px solid var(--pt-bg); }
+
+/* =========================================================================
+   PROJECT GRID: tilt-3d / neon-cells / glass-panels
+   ========================================================================= */
+.pt-grid-tilt { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+.pt-projcard.variant-tilt-3d, .pt-projcard.variant-neon-cells, .pt-projcard.variant-glass-panels {
+  background: var(--pt-surface); border-radius: var(--pt-radius); padding: 1.5rem; border: 1px solid color-mix(in srgb, var(--pt-muted) 20%, transparent);
+}
+.pt-projcard.variant-neon-cells { border: 1px solid color-mix(in srgb, var(--pt-accent) 40%, transparent); box-shadow: 0 0 30px -12px color-mix(in srgb, var(--pt-accent) 45%, transparent); }
+.pt-projcard.variant-glass-panels { backdrop-filter: blur(10px); background: color-mix(in srgb, var(--pt-surface) 80%, transparent); border: 1px solid rgba(255,255,255,0.5); }
+
+/* =========================================================================
+   PROJECT GRID: stacked-cards / gold-frames / column-marble (row layout)
+   ========================================================================= */
+.pt-grid-stack { display: flex; flex-direction: column; gap: 3.5rem; }
+.pt-projrow { display: grid; grid-template-columns: 1fr 1.3fr; gap: 2.5rem; align-items: center; }
+.pt-projrow.variant-gold-frames .pt-projimgwrap { border: 2px solid var(--pt-accent); padding: 6px; box-sizing: border-box; }
+.pt-projrow.variant-column-marble .pt-projimgwrap { border-radius: 0; }
+.pt-projinfo h3 { font-family: var(--pt-display); font-size: 1.4rem; margin: 0.6rem 0 0.6rem; }
+.pt-projinfo p { color: var(--pt-muted); font-size: 0.92rem; line-height: 1.7; }
+@media (max-width: 760px) { .pt-projrow { grid-template-columns: 1fr; } }
+
+/* =========================================================================
+   PROJECT GRID: mag-grid (asymmetric magazine)
+   ========================================================================= */
+.pt-grid-mag { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+.pt-mag-wide { grid-column: span 2; }
+@media (max-width: 760px) { .pt-grid-mag { grid-template-columns: 1fr; } .pt-mag-wide { grid-column: span 1; } }
+.pt-projcard.variant-mag { background: var(--pt-surface); padding: 1.25rem; border-left: 3px solid var(--pt-accent); }
+
+/* =========================================================================
+   PROJECT GRID: circular-orbit (Sakura)
+   ========================================================================= */
+.pt-grid-orbit { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2.5rem; }
+.pt-orbit-card { text-align: center; }
+.pt-orbit-imgwrap { width: 168px; height: 168px; border-radius: 50%; overflow: hidden; margin: 0 auto 1.25rem; border: 3px solid color-mix(in srgb, var(--pt-accent) 50%, transparent); }
+.pt-orbit-img { width: 100%; height: 100%; object-fit: cover; }
+.pt-orbit-card h3 { font-family: var(--pt-display); font-size: 1.1rem; margin-bottom: 0.4rem; }
+.pt-orbit-card p { color: var(--pt-muted); font-size: 0.85rem; line-height: 1.6; }
+
+/* =========================================================================
+   PROJECT GRID: blueprint-cells
+   ========================================================================= */
+.pt-grid-blueprint { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.pt-bp-cell { border: 1px dashed color-mix(in srgb, var(--pt-accent) 40%, transparent); padding: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+
+/* =========================================================================
+   PROJECT GRID: diagonal-scroll (Solstice)
+   ========================================================================= */
+.pt-grid-diagonal { display: flex; flex-direction: column; gap: 3rem; }
+.pt-diag-item:nth-child(odd) { margin-right: 12%; }
+.pt-diag-item:nth-child(even) { margin-left: 12%; }
+.pt-projcard.variant-diagonal { background: var(--pt-surface); border-radius: var(--pt-radius); padding: 1.5rem; }
+@media (max-width: 760px) { .pt-diag-item:nth-child(odd), .pt-diag-item:nth-child(even) { margin: 0; } }
+
+/* =========================================================================
+   PROJECT GRID: blob-cluster (Terra)
+   ========================================================================= */
+.pt-grid-blob { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.25rem; }
+.pt-blob-card { background: var(--pt-surface); padding: 1.5rem; border-radius: 46% 54% 38% 62% / 45% 40% 60% 55%; }
+.pt-blob-card .pt-projimgwrap { border-radius: 46% 54% 38% 62% / 45% 40% 60% 55%; }
+
+/* =========================================================================
+   BACKGROUND PATTERN LAYERS
+   ========================================================================= */
+.pt-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+.pt-bg-stars span { position: absolute; background: #fff; border-radius: 50%; opacity: 0.7; animation: pt-twinkle 3.5s ease-in-out infinite; }
+@keyframes pt-twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.9; } }
+
+.pt-bg-grain { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0); background-size: 4px 4px; opacity: 0.5; }
+
+.pt-bg-aurora { overflow: hidden; }
+.pt-bg-aurora span { position: absolute; width: 60vw; height: 60vw; border-radius: 50%; filter: blur(90px); opacity: 0.28; animation: pt-drift 22s ease-in-out infinite alternate; }
+.pt-bg-aurora span:first-child { top: -20%; left: -10%; }
+.pt-bg-aurora span:last-child { bottom: -25%; right: -10%; animation-duration: 26s; }
+@keyframes pt-drift { from { transform: translate(0,0) scale(1); } to { transform: translate(6%, 8%) scale(1.15); } }
+
+.pt-bg-gridglow { background-image: linear-gradient(color-mix(in srgb, var(--gg) 14%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--gg) 14%, transparent) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 40%, transparent 100%); }
+
+.pt-bg-petals span { position: absolute; top: -5%; width: 10px; height: 10px; border-radius: 60% 0 60% 0; background: var(--pt-accent); opacity: 0.45; animation: pt-fall linear infinite; }
+@keyframes pt-fall { from { transform: translateY(-10vh) rotate(0deg); } to { transform: translateY(110vh) rotate(340deg); } }
+
+.pt-bg-blueprint { background-image: linear-gradient(rgba(111,183,232,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(111,183,232,0.12) 1px, transparent 1px); background-size: 40px 40px; }
+
+.pt-bg-golddust span { position: absolute; width: 2px; height: 2px; background: var(--pt-accent); border-radius: 50%; opacity: 0.6; animation: pt-twinkle 4s ease-in-out infinite; }
+
+.pt-bg-sunset { background: radial-gradient(ellipse 90% 50% at 50% 0%, color-mix(in srgb, var(--pt-accent) 22%, transparent), transparent 65%), radial-gradient(ellipse 70% 50% at 90% 100%, color-mix(in srgb, var(--pt-accent2) 20%, transparent), transparent 65%); }
+
+.pt-bg-marble { background-image: linear-gradient(115deg, transparent 40%, rgba(160,138,95,0.08) 42%, transparent 44%), linear-gradient(65deg, transparent 60%, rgba(20,18,16,0.05) 62%, transparent 64%); }
+
+.pt-bg-scanlines { background: repeating-linear-gradient(0deg, rgba(0,240,255,0.035) 0px, rgba(0,240,255,0.035) 1px, transparent 1px, transparent 3px); }
+
+.pt-bg-blobs { overflow: hidden; }
+.pt-bg-blobs span { position: absolute; width: 50vw; height: 50vw; border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%; filter: blur(60px); opacity: 0.22; animation: pt-morph 18s ease-in-out infinite alternate; }
+.pt-bg-blobs span:first-child { top: -10%; left: -15%; }
+.pt-bg-blobs span:last-child { bottom: -15%; right: -10%; animation-duration: 24s; }
+@keyframes pt-morph { from { border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%; } to { border-radius: 58% 42% 40% 60% / 55% 60% 40% 45%; } }
+
+/* =========================================================================
+   RESPONSIVE
+   ========================================================================= */
+@media (max-width: 640px) {
+  .pt-section { padding: 4rem 1.25rem; }
+  .pt-hero { padding: 6rem 1.25rem 4rem; }
+  .pt-credgrid { grid-template-columns: 1fr; gap: 2rem; }
+  .pt-showcase-ring { display: none; }
+}

@@ -1,0 +1,139 @@
+.selector-viewport {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  padding: 4rem 6vw;
+  overflow: hidden;
+  position: relative;
+}
+
+.selector-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.selector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+  width: 100%;
+}
+
+@media (max-width: 992px) {
+  .selector-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .selector-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Template selection card */
+.tpl-select-card {
+  background: rgba(12, 12, 12, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.tpl-select-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: var(--transition-smooth);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.tpl-select-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.tpl-select-card:hover::before {
+  border-color: var(--accent-color);
+  box-shadow: inset 0 0 15px rgba(230, 57, 70, 0.15);
+}
+
+/* Scaled micro preview system */
+.mini-preview-container {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mini-preview-scale {
+  width: 400%; /* Scale target up 4x for high resolution render */
+  height: 400%;
+  transform: scale(0.25);
+  transform-origin: top left;
+  pointer-events: none; /* Deactivates interactive details inside */
+  background: #000;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tpl-select-card:hover .mini-preview-scale {
+  transform: scale(0.26) translateY(-5%); /* Parallax scroll simulate inside card on hover */
+}
+
+/* Card details metadata */
+.tpl-card-details {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(18, 18, 18, 0.2);
+}
+
+.tpl-card-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.tpl-card-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.use-design-btn {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: var(--transition-fast);
+}
+
+.tpl-select-card:hover .use-design-btn {
+  border-color: var(--accent-color);
+  background: var(--accent-color);
+}
