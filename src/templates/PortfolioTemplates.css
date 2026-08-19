@@ -69,6 +69,9 @@
 .pt-expdesc { color: var(--pt-muted); line-height: 1.7; font-size: 0.95rem; }
 
 .pt-credgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.pt-extra-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.pt-extra-card { height: 100%; padding: 1.5rem; border: 1px solid color-mix(in srgb, var(--pt-muted) 28%, transparent); background: color-mix(in srgb, var(--pt-surface) 82%, transparent); border-radius: var(--pt-radius); }
+.pt-extra-link { display: inline-block; margin-top: 1rem; color: var(--pt-accent); font-size: .78rem; text-decoration: none; }
 .pt-credtitle { font-family: var(--pt-display); font-size: 1.1rem; margin-bottom: 1.25rem; color: var(--pt-accent); }
 .pt-creditem { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1.25rem; }
 .pt-creditem strong { font-size: 1rem; }

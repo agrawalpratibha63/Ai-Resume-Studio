@@ -236,7 +236,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
                 <div>
                   <div className="ctrl-section-title"><Sliders size={12} style={{ marginRight: '0.5rem' }} /> Archetype</div>
                   <div className="font-row">
-                    {['Void', 'Crimson', 'Orbit', 'Frame', 'Nexus', 'Echo'].map(tpl => (
+                    {['Zenith', 'Ember', 'Glacier', 'Obsidian', 'Sakura', 'Blueprint', 'Velour', 'Solstice', 'Marble', 'Nova', 'Terra'].map(tpl => (
                       <div 
                         key={tpl}
                         className={`font-option ${portfolioData.template === tpl.toLowerCase() ? 'active' : ''}`}
