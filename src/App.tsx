@@ -4,13 +4,22 @@ import { CinematicLanding } from './landing/CinematicLanding';
 import { CreationWizard } from './wizard/CreationWizard';
 import { TemplateSelector } from './templates/TemplateSelector';
 import { LiveEditor } from './editor/LiveEditor';
-import { AuthGate } from './auth/AuthGate';
+import { AuthGate, useAuth } from './auth/AuthGate';
 
 type AppView = 'landing' | 'wizard' | 'selector' | 'editor';
 
 function AppContent() {
   const [view, setView] = useState<AppView>('landing');
   const { setPortfolioData } = usePortfolio();
+  const { user, signIn } = useAuth();
+
+  const handleGetStarted = async () => {
+    if (!user) {
+      const signedIn = await signIn();
+      if (!signedIn) return;
+    }
+    setView('wizard');
+  };
 
   const handleSelectTemplate = (templateName: string) => {
     setPortfolioData((prev) => ({
@@ -25,7 +34,7 @@ function AppContent() {
     <>
       {view === 'landing' && (
         <CinematicLanding
-          onGetStarted={() => setView('wizard')}
+          onGetStarted={handleGetStarted}
         />
       )}
 

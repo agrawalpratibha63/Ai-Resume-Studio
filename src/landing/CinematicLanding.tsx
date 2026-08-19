@@ -302,74 +302,18 @@ const heroY = useTransform(
     [40, -40]
   );
 
-  // ============================================
-  // ASSEMBLY CARDS
-  // ============================================
-  const assemblyOpacity = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.91, 0.95, 0.97],
-    [0, 1, 1, 0]
-  );
-
-  const photoX = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [-200, 0]
-  );
-
-  const photoY = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [-100, 0]
-  );
-
-  const nameX = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [200, 0]
-  );
-
-  const nameY = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [-100, 0]
-  );
-
-  const skillsX = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [200, 0]
-  );
-
-  const skillsY = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [200, 0]
-  );
-
-  const expX = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [-250, 0]
-  );
-
-  const expYNode = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [200, 0]
-  );
-
-  const projectX = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [0, 0]
-  );
-
-  const projectY = useTransform(
-    smoothScrollProgress,
-    [0.88, 0.92],
-    [300, 0]
-  );
+  // Kept for the hidden legacy fragment layout so the animation timeline stays stable.
+  const assemblyOpacity = useTransform(smoothScrollProgress, [0.88, 0.91, 0.95, 0.97], [0, 1, 1, 0]);
+  const photoX = useTransform(smoothScrollProgress, [0.88, 0.92], [-200, 0]);
+  const photoY = useTransform(smoothScrollProgress, [0.88, 0.92], [-100, 0]);
+  const nameX = useTransform(smoothScrollProgress, [0.88, 0.92], [200, 0]);
+  const nameY = useTransform(smoothScrollProgress, [0.88, 0.92], [-100, 0]);
+  const skillsX = useTransform(smoothScrollProgress, [0.88, 0.92], [200, 0]);
+  const skillsY = useTransform(smoothScrollProgress, [0.88, 0.92], [200, 0]);
+  const expX = useTransform(smoothScrollProgress, [0.88, 0.92], [-250, 0]);
+  const expYNode = useTransform(smoothScrollProgress, [0.88, 0.92], [200, 0]);
+  const projectX = useTransform(smoothScrollProgress, [0.88, 0.92], [0, 0]);
+  const projectY = useTransform(smoothScrollProgress, [0.88, 0.92], [300, 0]);
 
   // ============================================
   // CANVAS VEIL

@@ -179,6 +179,7 @@
 
 /* Digital Identity Fragments Assembly Overlay */
 .assembly-grid {
+  display: none;
   position: absolute;
   inset: 0;
   display: grid;
