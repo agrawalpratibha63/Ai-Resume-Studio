@@ -179,10 +179,9 @@
 
 /* Digital Identity Fragments Assembly Overlay */
 .assembly-grid {
-  display: none;
+  display: none !important;
   position: absolute;
   inset: 0;
-  display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(12, 1fr);
   padding: 4rem;
