@@ -623,6 +623,31 @@ const ThemeTemplate: React.FC<TplProps & { theme: Theme }> = ({ data, isEditMode
         </section>
       )}
 
+      {data.additionalSections?.map((section, sectionIndex) => (
+        <section className="pt-section" key={`${section.title}-${sectionIndex}`}>
+          <Reveal>
+            <span className="pt-kicker">
+              {String(sectionIndex + 6).padStart(2, '0')} — {section.title}
+            </span>
+          </Reveal>
+          <div className="pt-extra-grid">
+            {section.items.map((item, itemIndex) => (
+              <Reveal key={itemIndex} delay={Math.min(itemIndex * 0.07, 0.35)} dir="up">
+                <article className="pt-extra-card">
+                  <div className="pt-exphead">
+                    <strong>{item.heading}</strong>
+                    {item.period && <span className="pt-mono-tag">{item.period}</span>}
+                  </div>
+                  {item.subheading && <div className="pt-expcompany">{item.subheading}</div>}
+                  {item.description && <p className="pt-expdesc">{item.description}</p>}
+                  {item.url && <a className="pt-extra-link" href={item.url} target="_blank" rel="noreferrer">View reference ↗</a>}
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      ))}
+
       <footer className="pt-footer">
         <Reveal dir="scale">
           <span className="pt-kicker">Get in touch</span>
