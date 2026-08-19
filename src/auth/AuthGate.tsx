@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth';
 import { LogOut, ShieldCheck, Sparkles } from 'lucide-react';
-import { auth, firebaseConfigured } from '../lib/firebase';
+import { auth, firebaseConfigured, missingFirebaseVariables } from '../lib/firebase';
 import './AuthGate.css';
 
 export function AuthGate({ children }: { children: ReactNode }) {
@@ -33,7 +33,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
   if (loading) return <div className="auth-loading">RESTORING SECURE SESSION...</div>;
 
   if (!firebaseConfigured) {
-    return <div className="auth-loading">FIREBASE CONFIGURATION IS MISSING.</div>;
+    return <div className="auth-loading">MISSING: {missingFirebaseVariables.join(', ')}</div>;
   }
 
   if (!user) {
