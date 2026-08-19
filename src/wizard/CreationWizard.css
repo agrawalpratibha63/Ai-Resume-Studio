@@ -480,3 +480,13 @@
   align-items: center;
   gap: 0.5rem;
 }
+.ai-inline-error { display:flex; align-items:center; gap:.4rem; color:#ff6b6b; font-size:.75rem; margin-top:.75rem; }
+.skill-recommendations { margin-top:1.25rem; padding:1rem; border:1px solid rgba(230,57,70,.25); background:rgba(230,57,70,.04); border-radius:6px; }
+.skill-recommendations-head { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:.8rem; color:var(--accent-color); font:.7rem var(--font-mono); text-transform:uppercase; letter-spacing:.08em; }
+.skill-recommendations-head span { display:flex; align-items:center; gap:.4rem; }
+.skill-recommendations-head button { border:0; background:transparent; color:var(--text-secondary); cursor:pointer; }
+.skill-recommendations-head button:disabled { cursor:wait; opacity:.6; }
+.recommended-skill-list { display:flex; flex-wrap:wrap; gap:.55rem; }
+.recommended-skill-list button { display:inline-flex; align-items:center; gap:.3rem; padding:.45rem .7rem; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04); color:var(--text-primary); border-radius:999px; cursor:pointer; }
+.recommended-skill-list button:hover { border-color:var(--accent-color); color:var(--accent-color); }
+.skills-hint { color:var(--text-muted); font-size:.75rem; }

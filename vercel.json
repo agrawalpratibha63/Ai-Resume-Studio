@@ -2,5 +2,8 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "functions": { "api/resume/parse.ts": { "maxDuration": 120 } }
+  "functions": {
+    "api/resume/parse.ts": { "maxDuration": 120 },
+    "api/ai/assist.ts": { "maxDuration": 60 }
+  }
 }

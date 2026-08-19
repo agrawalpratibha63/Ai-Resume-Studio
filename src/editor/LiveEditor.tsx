@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Check, Play, Code, ArrowLeft, X,
-  ExternalLink, Download, FileCode, CheckCircle, Palette, Type, Sliders 
+  ExternalLink, Download, FileCode, CheckCircle, Palette, Type, Sliders, Maximize2, Minimize2 
 } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 import { TemplateRenderer } from '../templates/TemplateRenderer';
@@ -21,6 +21,23 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
   const [showCodeModal, setShowCodeModal] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
   const [fullViewportMode, setFullViewportMode] = useState(false);
+  const [isBrowserFullscreen, setIsBrowserFullscreen] = useState(false);
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const syncFullscreen = () => setIsBrowserFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener('fullscreenchange', syncFullscreen);
+    return () => document.removeEventListener('fullscreenchange', syncFullscreen);
+  }, []);
+
+  const toggleBrowserFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) await previewRef.current?.requestFullscreen();
+      else await document.exitFullscreen();
+    } catch {
+      setFullViewportMode(true);
+    }
+  };
 
   // Customization palettes
   const accentColors = [
@@ -298,7 +315,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
               className="editor-preview-container"
               style={{ paddingLeft: fullViewportMode ? '1.5rem' : '360px' }}
             >
-              <div className="mock-browser-frame">
+              <div className="mock-browser-frame" ref={previewRef}>
                 <div className="browser-header-mock">
                   <div className="browser-dots">
                     <div className="browser-dot" />
@@ -308,13 +325,13 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
                   <div className="browser-address">
                     https://{portfolioData.profile.name.toLowerCase().replace(/\s+/g, '')}.identity.aura
                   </div>
-                  <button 
-                    className="photo-action-btn"
-                    style={{ fontSize: '0.65rem' }}
-                    onClick={() => setFullViewportMode(!fullViewportMode)}
-                  >
-                    {fullViewportMode ? 'Show Controls' : 'Fullscreen'}
-                  </button>
+                  <div className="preview-actions">
+                    <button className="photo-action-btn" onClick={() => setFullViewportMode(!fullViewportMode)}>{fullViewportMode ? 'Show Controls' : 'Hide Controls'}</button>
+                    <button className="photo-action-btn fullscreen-btn" onClick={toggleBrowserFullscreen}>
+                      {isBrowserFullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
+                      {isBrowserFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+                    </button>
+                  </div>
                 </div>
                 
                 {/* Live rendering panel */}

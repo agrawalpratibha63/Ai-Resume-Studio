@@ -40,6 +40,9 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
   // UI inputs helper
   const [skillInput, setSkillInput] = useState('');
   const [fileError, setFileError] = useState<string | null>(null);
+  const [recommendedSkills, setRecommendedSkills] = useState<string[]>([]);
+  const [skillsLoading, setSkillsLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
   
   // AI assistant state
   const [aiState, setAiState] = useState<{
@@ -56,18 +59,13 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
     isGenerating: false
   });
 
-  // Simulated AI responses
-  const aiSuggestions: { [key: string]: string[] } = {
-    bio: [
-    ],
-    project: [
-    ],
-    experience: [
-    ]
-  };
-
   // AI assistant triggers
-  const triggerAi = (field: string, currentText: string) => {
+  const triggerAi = async (field: string, currentText: string) => {
+    if (field !== 'bio') return;
+    if (currentText.trim().length < 10) {
+      setAiError('Write a short bio first, then AI can refine it.');
+      return;
+    }
     setAiState({
       isActive: true,
       targetField: field,
@@ -75,36 +73,38 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
       originalText: currentText,
       isGenerating: true
     });
+    setAiError(null);
+    try {
+      const token = await auth?.currentUser?.getIdToken();
+      const response = await fetch('/api/ai/assist', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` }, body: JSON.stringify({ task: 'refine-bio', bio: currentText, title: profile.title }) });
+      const payload = await response.json();
+      if (!response.ok || !payload.bio) throw new Error(payload.error || 'AI could not refine this bio.');
+      setAiState(prev => ({ ...prev, text: payload.bio, isGenerating: false }));
+    } catch (error) {
+      setAiState(prev => ({ ...prev, isActive: false, isGenerating: false }));
+      setAiError(error instanceof Error ? error.message : 'AI could not refine this bio.');
+    }
   };
 
-  // Run simulated typewriter generation
+  const loadRecommendedSkills = async () => {
+    if (!profile.title.trim() && !about.trim()) return setRecommendedSkills([]);
+    setSkillsLoading(true);
+    try {
+      const token = await auth?.currentUser?.getIdToken();
+      const response = await fetch('/api/ai/assist', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` }, body: JSON.stringify({ task: 'recommend-skills', title: profile.title, bio: about, projects: projects.map(p => `${p.title}: ${p.description}`), experience: experience.map(e => `${e.role} at ${e.company}: ${e.description}`), existingSkills: skills }) });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || 'Could not load skill recommendations.');
+      setRecommendedSkills(Array.isArray(payload.skills) ? payload.skills : []);
+    } catch (error) {
+      setAiError(error instanceof Error ? error.message : 'Could not load skill recommendations.');
+    } finally { setSkillsLoading(false); }
+  };
+
   useEffect(() => {
-    if (!aiState.isGenerating) return;
-
-    let targetText = '';
-    if (aiState.targetField.includes('bio')) {
-      targetText = aiSuggestions.bio[Math.floor(Math.random() * aiSuggestions.bio.length)];
-    } else if (aiState.targetField.includes('project')) {
-      targetText = aiSuggestions.project[Math.floor(Math.random() * aiSuggestions.project.length)];
-    } else {
-      targetText = aiSuggestions.experience[Math.floor(Math.random() * aiSuggestions.experience.length)];
-    }
-
-    let index = 0;
-    const interval = setInterval(() => {
-      setAiState(prev => ({
-        ...prev,
-        text: targetText.substring(0, index + 1)
-      }));
-      index++;
-      if (index >= targetText.length) {
-        clearInterval(interval);
-        setAiState(prev => ({ ...prev, isGenerating: false }));
-      }
-    }, 25);
-
-    return () => clearInterval(interval);
-  }, [aiState.isGenerating]);
+    if (currentPath !== 'create' || currentStep !== 2) return;
+    const timer = window.setTimeout(loadRecommendedSkills, 700);
+    return () => window.clearTimeout(timer);
+  }, [currentPath, currentStep, profile.title, about]);
 
   const acceptAi = () => {
     const refinedText = aiState.text;
@@ -198,6 +198,11 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
 
   const removeSkill = (skill: string) => {
     setSkills(prev => prev.filter(s => s !== skill));
+  };
+
+  const addRecommendedSkill = (skill: string) => {
+    setSkills(prev => prev.some(item => item.toLowerCase() === skill.toLowerCase()) ? prev : [...prev, skill]);
+    setRecommendedSkills(prev => prev.filter(item => item !== skill));
   };
 
   // Add/Remove experiences, projects, education, certificates
@@ -978,6 +983,7 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
                       <button className="ai-trigger-btn" onClick={() => triggerAi('bio', about)}>
                         <Sparkles size={12} /> Refine bio with AI
                       </button>
+                      {aiError && <p className="ai-inline-error"><AlertCircle size={13} /> {aiError}</p>}
                     </div>
 
                     {/* AI assistant box inside form */}
@@ -1034,6 +1040,20 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
                             </span>
                           ))
                         )}
+                      </div>
+
+                      <div className="skill-recommendations">
+                        <div className="skill-recommendations-head">
+                          <span><Sparkles size={13} /> AI Recommended Skills</span>
+                          <button type="button" onClick={loadRecommendedSkills} disabled={skillsLoading}>{skillsLoading ? 'Detecting…' : 'Refresh'}</button>
+                        </div>
+                        {skillsLoading && recommendedSkills.length === 0 ? (
+                          <span className="skills-hint">Analysing your title and bio…</span>
+                        ) : recommendedSkills.length ? (
+                          <div className="recommended-skill-list">
+                            {recommendedSkills.map(skill => <button type="button" key={skill} onClick={() => addRecommendedSkill(skill)}><Plus size={12} /> {skill}</button>)}
+                          </div>
+                        ) : <span className="skills-hint">Add a professional title or bio to receive suggestions.</span>}
                       </div>
                     </div>
                   </div>

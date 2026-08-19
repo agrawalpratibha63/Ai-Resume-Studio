@@ -63,6 +63,11 @@
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
 }
 
+.mock-browser-frame:fullscreen { border:0; border-radius:0; width:100vw; height:100vh; background:#000; }
+.mock-browser-frame:fullscreen > div:last-child { height:calc(100vh - 54px) !important; }
+.preview-actions { display:flex; align-items:center; gap:.5rem; }
+.fullscreen-btn { display:inline-flex; align-items:center; gap:.4rem; font-size:.65rem; }
+
 .browser-header-mock {
   background: #0c0c0e;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
