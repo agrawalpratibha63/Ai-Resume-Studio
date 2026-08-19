@@ -8,6 +8,7 @@ import {
 import { usePortfolio } from '../context/PortfolioContext';
 import type { PortfolioData, Project, Experience, Education, Certificate } from '../context/PortfolioContext';
 import './CreationWizard.css';
+import { auth } from '../lib/firebase';
 
 interface CreationWizardProps {
   onBackToLanding: () => void;
@@ -273,7 +274,13 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
       try {
         const formData = new FormData();
         formData.append('resume', file);
-        const response = await fetch('/api/resume/parse', { method: 'POST', body: formData });
+        const idToken = await auth.currentUser?.getIdToken();
+        if (!idToken) throw new Error('Your session expired. Please sign in again.');
+        const response = await fetch('/api/resume/parse', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${idToken}` },
+          body: formData,
+        });
         const result = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(result.error || 'We could not read this resume. Please try again.');
 
