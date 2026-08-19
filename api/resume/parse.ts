@@ -128,7 +128,7 @@ Rules:
 - Derive project tags only from technologies explicitly named in that project's resume content.
 - Combine bullet points into concise, factual portfolio-ready descriptions without losing metrics or outcomes.
 - Create about from resume facts only, maximum 80 words.
-- Return only JSON matching the supplied schema.`;
+- Return only JSON with these exact top-level keys: profile, about, skills, experience, education, projects, certificates, contact, socialLinks, additionalSections.`;
 
     let documentPart: Record<string, unknown>;
     if (mimeType === PDF) {
@@ -150,16 +150,24 @@ Rules:
     let usedModel = '';
     let lastProviderMessage = '';
 
-    for (const model of models) {
-      try {
+    modelLoop: for (const model of models) {
+      // First use Gemini's current JSON Schema field. If a provider/model rejects
+      // structured output, retry once in JSON-only mode and validate locally.
+      for (const withSchema of [true, false]) {
+       try {
         const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
           body: JSON.stringify({
             contents: [{ role: 'user', parts: [{ text: prompt }, documentPart] }],
-            generationConfig: { responseMimeType: 'application/json', responseSchema: portfolioSchema, temperature: 0.1, maxOutputTokens: 16384 },
+            generationConfig: {
+              responseMimeType: 'application/json',
+              ...(withSchema ? { responseJsonSchema: portfolioSchema } : {}),
+              temperature: 0.1,
+              maxOutputTokens: 16384,
+            },
           }),
-          signal: AbortSignal.timeout(75_000),
+          signal: AbortSignal.timeout(45_000),
         });
 
         const currentPayload = await aiResponse.json() as Record<string, any>;
@@ -168,12 +176,18 @@ Rules:
         if (aiResponse.ok && currentPayload?.candidates?.length) {
           payload = currentPayload;
           usedModel = model;
-          break;
+          break modelLoop;
         }
-        console.error('Gemini API error', { model, status: aiResponse.status, message: lastProviderMessage });
+        console.error('Gemini API error', { model, withSchema, status: aiResponse.status, message: lastProviderMessage });
+        // A schema-free retry is useful for schema-related 400 responses. For
+        // quota/auth/model errors move directly to the next model.
+        if (withSchema && aiResponse.status === 400) continue;
+        break;
       } catch (providerError) {
         lastProviderMessage = providerError instanceof Error ? providerError.message : 'Gemini request failed';
-        console.error('Gemini request failed', { model, message: lastProviderMessage });
+        console.error('Gemini request failed', { model, withSchema, message: lastProviderMessage });
+        break;
+       }
       }
     }
 
