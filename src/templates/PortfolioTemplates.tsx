@@ -550,12 +550,12 @@ const ThemeTemplate: React.FC<TplProps & { theme: Theme }> = ({ data, isEditMode
 
       <Hero data={data} isEditMode={isEditMode} onSaveField={onSaveField} theme={theme} />
 
-      <section className="pt-section">
+      {data.about.trim() && <section className="pt-section">
         <Reveal><span className="pt-kicker">01 — About</span></Reveal>
         <Reveal delay={0.08}>
           <EditableText tagName="p" type="textarea" className="pt-about" text={data.about} onSave={(v) => onSaveField('about', v)} isEditMode={isEditMode} />
         </Reveal>
-      </section>
+      </section>}
 
       {data.skills.length > 0 && (
         <section className="pt-section">
@@ -648,13 +648,13 @@ const ThemeTemplate: React.FC<TplProps & { theme: Theme }> = ({ data, isEditMode
         </section>
       ))}
 
-      <footer className="pt-footer">
+      {(data.contact.email.trim() || Object.values(data.socialLinks).some((link) => link.trim())) && <footer className="pt-footer">
         <Reveal dir="scale">
           <span className="pt-kicker">Get in touch</span>
           <a href={`mailto:${data.contact.email}`} className="pt-footer-email">{data.contact.email}</a>
           <Socials data={data} color={theme.accent} />
         </Reveal>
-      </footer>
+      </footer>}
     </div>
   );
 };

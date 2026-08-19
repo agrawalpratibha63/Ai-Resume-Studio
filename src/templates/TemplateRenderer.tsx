@@ -190,32 +190,46 @@ export const TemplateRenderer: React.FC<TemplateRendererProps> = ({
   isEditMode = false,
   onSaveField = () => {}
 }) => {
-  const currentTemplate = data.template.toLowerCase();
+  const hasText = (...values: unknown[]) => values.some((value) => typeof value === 'string' && value.trim());
+  const cleanData: PortfolioData = {
+    ...data,
+    about: data.about?.trim() || '',
+    skills: data.skills.filter((skill) => skill.trim()),
+    experience: data.experience.filter((item) => hasText(item.company, item.role, item.period, item.description)),
+    education: data.education.filter((item) => hasText(item.school, item.degree, item.period)),
+    projects: data.projects.filter((item) => hasText(item.title, item.description, item.url) || item.tags.some((tag) => tag.trim())),
+    certificates: data.certificates.filter((item) => hasText(item.title, item.issuer, item.date)),
+    additionalSections: (data.additionalSections || []).map((section) => ({
+      ...section,
+      items: section.items.filter((item) => hasText(item.heading, item.subheading, item.period, item.description, item.url)),
+    })).filter((section) => section.title.trim() && section.items.length > 0),
+  };
+  const currentTemplate = cleanData.template.toLowerCase();
 
   switch (currentTemplate) {
     case 'zenith':
-      return <ZenithTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <ZenithTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'ember':
-      return <EmberTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <EmberTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'glacier':
-      return <GlacierTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <GlacierTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'obsidian':
-      return <ObsidianTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <ObsidianTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'sakura':
-      return <SakuraTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <SakuraTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'blueprint':
-      return <BlueprintTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <BlueprintTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'velour':
-      return <VelourTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <VelourTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'solstice':
-      return <SolsticeTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <SolsticeTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'marble':
-      return <MarbleTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <MarbleTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'nova':
-      return <NovaTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <NovaTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     case 'terra':
-      return <TerraTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <TerraTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
     default:
-      return <ZenithTemplate data={data} isEditMode={isEditMode} onSaveField={onSaveField} />;
+      return <ZenithTemplate data={cleanData} isEditMode={isEditMode} onSaveField={onSaveField} />;
   }
 };

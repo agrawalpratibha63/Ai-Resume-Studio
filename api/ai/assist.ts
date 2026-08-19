@@ -40,6 +40,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const result = await generate(`Refine this portfolio bio in its current language. Keep every claim factual; never invent skills, employers, achievements or numbers. Use a confident natural first-person tone in 45-80 words. Return only {"bio":"..."}.\nTitle: ${clean(body.title, 150)}\nBio: ${bio}`, { type: 'object', required: ['bio'], properties: { bio: { type: 'string' } } });
       return res.status(200).json({ bio: clean(result.bio, 1200) });
     }
+    if (body.task === 'refine-description') {
+      const description = clean(body.description, 2500);
+      if (description.length < 10) return res.status(400).json({ error: 'Write a short description first.' });
+      const kind = clean(body.kind, 40) === 'experience' ? 'work experience' : 'project';
+      const result = await generate(`Refine this ${kind} description for a professional portfolio. Preserve its language and every factual claim. Never invent technologies, employers, metrics, achievements, or responsibilities. Make it concise and readable in 30-65 words. Return only {"text":"..."}.\nOriginal description: ${description}`, { type: 'object', required: ['text'], properties: { text: { type: 'string' } } });
+      return res.status(200).json({ text: clean(result.text, 1200) });
+    }
     if (body.task === 'recommend-skills') {
       const title = clean(body.title, 150), bio = clean(body.bio, 1500), projects = list(body.projects, 12), experience = list(body.experience, 12), existing = list(body.existingSkills, 30);
       if (!title && !bio && !projects.length && !experience.length) return res.status(200).json({ skills: [] });

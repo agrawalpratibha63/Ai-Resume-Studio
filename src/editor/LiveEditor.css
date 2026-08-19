@@ -62,6 +62,8 @@
   overflow: hidden;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
 }
+.editor-controls { background:linear-gradient(145deg,rgba(18,18,18,.9),rgba(7,7,7,.88)); }
+.browser-header-mock { background:rgba(10,10,10,.88); }
 
 .mock-browser-frame:fullscreen { border:0; border-radius:0; width:100vw; height:100vh; background:#000; }
 .mock-browser-frame:fullscreen > div:last-child { height:calc(100vh - 54px) !important; }

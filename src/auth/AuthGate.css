@@ -13,11 +13,12 @@
   min-height: 42px;
   color: #fff;
   background: rgba(5, 5, 5, .82);
-  border: 1px solid rgba(255, 255, 255, .18);
+  border: 1px solid rgba(255, 255, 255, .14);
   backdrop-filter: blur(14px);
   font: .72rem 'Fira Code', monospace;
   letter-spacing: .12em;
 }
+.signup-button,.user-session{box-shadow:0 16px 45px rgba(0,0,0,.42),0 0 24px rgba(230,57,70,.05);border-radius:3px}
 
 .auth-status { display: grid; place-items: center; padding: 0 1rem; color: #aaa; }
 .signup-button { padding: 0 1.25rem; cursor: pointer; transition: border-color .2s, color .2s, background .2s; }

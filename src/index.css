@@ -174,3 +174,24 @@ body {
 button:focus, button:focus-visible {
   outline: none;
 }
+
+/* Unified cinematic product shell */
+.wizard-viewport,.selector-viewport,.editor-viewport,.success-viewport {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(230,57,70,.09), transparent 27%),
+    radial-gradient(circle at 88% 72%, rgba(255,255,255,.035), transparent 25%),
+    #060606;
+}
+.wizard-viewport::before,.selector-viewport::before,.editor-viewport::before {
+  content:''; position:fixed; inset:0; pointer-events:none; opacity:.25;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:64px 64px; mask-image:radial-gradient(circle at center,#000,transparent 85%);
+}
+.wizard-header,.selector-header,.browser-header-mock { backdrop-filter:blur(18px); }
+.wizard-card,.path-option,.tpl-select-card,.editor-controls,.mock-browser-frame {
+  box-shadow:0 28px 80px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.025);
+}
+.path-option,.tpl-select-card,.wizard-list-item,.editor-controls { border-color:rgba(255,255,255,.09); }
+.path-option:hover,.tpl-select-card:hover { box-shadow:0 32px 90px rgba(0,0,0,.7),0 0 35px rgba(230,57,70,.09); }
+.step-title,.path-title,.selector-header h1 { letter-spacing:-.035em; }
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

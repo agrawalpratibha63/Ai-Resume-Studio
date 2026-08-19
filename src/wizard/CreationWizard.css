@@ -354,6 +354,8 @@
   border-color: var(--accent-color);
   box-shadow: 0 0 15px rgba(230, 57, 70, 0.15);
 }
+.ai-trigger-btn { background:rgba(230,57,70,.08); border:1px solid rgba(230,57,70,.38); border-radius:3px; padding:.55rem .75rem; color:#ff6672; font-weight:600; }
+.ai-trigger-btn:disabled { opacity:.55; cursor:wait; }
 
 .ai-generating-overlay {
   background: rgba(10, 10, 10, 0.8);
@@ -389,6 +391,8 @@
   gap: 1rem;
   margin-top: 1.5rem;
 }
+.ai-options .photo-action-btn { background:#111; color:#f2f2f2; border-color:#383838; }
+.ai-options .photo-action-btn:hover { background:rgba(230,57,70,.12); border-color:var(--accent-color); color:#fff; }
 
 /* Resume Import Processing styles */
 .scanner-container {
