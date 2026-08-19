@@ -48,6 +48,19 @@ export interface SocialLinks {
   portfolio?: string;
 }
 
+export interface AdditionalSectionItem {
+  heading: string;
+  subheading: string;
+  period: string;
+  description: string;
+  url?: string;
+}
+
+export interface AdditionalSection {
+  title: string;
+  items: AdditionalSectionItem[];
+}
+
 export interface Customization {
   accentColor: string;
   fontFamily: string; // 'Void' (sans), 'Crimson' (serif), 'Orbit' (modern), 'Frame' (serif), 'Nexus' (mono), 'Echo' (clean)
@@ -65,6 +78,7 @@ export interface PortfolioData {
   certificates: Certificate[];
   contact: Contact;
   socialLinks: SocialLinks;
+  additionalSections: AdditionalSection[];
   template: string; // 'zenith' | 'ember' | 'glacier' | 'obsidian' | 'sakura' | 'blueprint' | 'velour' | 'solstice' | 'marble' | 'nova' | 'terra'
   customization: Customization;
 }
@@ -131,6 +145,7 @@ const defaultMockData: PortfolioData = {
     linkedin: '',
     twitter: '',
   },
+  additionalSections: [],
   template: 'zenith',
   customization: {
     accentColor: '#e63946',
