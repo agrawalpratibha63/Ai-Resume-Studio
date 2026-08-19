@@ -10,6 +10,12 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-export const firebaseConfigured = Object.values(firebaseConfig).every(Boolean);
+export const missingFirebaseVariables = [
+  ['VITE_FIREBASE_API_KEY', firebaseConfig.apiKey],
+  ['VITE_FIREBASE_AUTH_DOMAIN', firebaseConfig.authDomain],
+  ['VITE_FIREBASE_PROJECT_ID', firebaseConfig.projectId],
+  ['VITE_FIREBASE_APP_ID', firebaseConfig.appId],
+].filter(([, value]) => !value).map(([name]) => name);
+export const firebaseConfigured = missingFirebaseVariables.length === 0;
 const app = getApps()[0] ?? initializeApp(firebaseConfig);
 export const auth = getAuth(app);
