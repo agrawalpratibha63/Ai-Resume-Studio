@@ -6,7 +6,7 @@ import {
   Mail, Link as LinkIcon, User, AlertCircle, Code 
 } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
-import type { PortfolioData, Project, Experience, Education, Certificate } from '../context/PortfolioContext';
+import type { PortfolioData, Project, Experience, Education, Certificate, AdditionalSection } from '../context/PortfolioContext';
 import './CreationWizard.css';
 import { auth } from '../lib/firebase';
 
@@ -35,6 +35,7 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
   const [certificates, setCertificates] = useState<Certificate[]>(portfolioData.certificates);
   const [contact, setContact] = useState(portfolioData.contact);
   const [socialLinks, setSocialLinks] = useState(portfolioData.socialLinks);
+  const [additionalSections, setAdditionalSections] = useState<AdditionalSection[]>(portfolioData.additionalSections || []);
 
   // UI inputs helper
   const [skillInput, setSkillInput] = useState('');
@@ -294,6 +295,14 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
         setCertificates(data.certificates || []);
         setContact(data.contact || { email: '', phone: '', address: '' });
         setSocialLinks(data.socialLinks || {});
+        setAdditionalSections(data.additionalSections || []);
+        setPortfolioData((previous) => ({
+          ...previous,
+          ...data,
+          profile: { ...data.profile, photo: '' },
+          customization: previous.customization,
+          template: previous.template,
+        }));
         setCurrentPath('import-review');
       } catch (error) {
         setFileError(error instanceof Error ? error.message : 'Resume parsing failed. Please try again.');
@@ -314,7 +323,8 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
       education,
       certificates,
       contact,
-      socialLinks
+      socialLinks,
+      additionalSections
     };
     setPortfolioData(finalData);
     onComplete(finalData);
@@ -470,6 +480,14 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
                         onChange={(e) => setProfile(p => ({ ...p, title: e.target.value }))}
                       />
                       <label className="creative-label">Professional Title</label>
+                    </div>
+                    <div className="creative-input-group" style={{ gridColumn: '1 / -1' }}>
+                      <input
+                        className="creative-input"
+                        value={profile.location}
+                        onChange={(e) => setProfile(p => ({ ...p, location: e.target.value }))}
+                      />
+                      <label className="creative-label">Location</label>
                     </div>
                   </div>
                 </div>
@@ -805,13 +823,50 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
   </div>
 </div>
 
+{/* Any additional resume sections are preserved instead of being dropped. */}
+{additionalSections.map((section, sectionIndex) => (
+  <div className="review-section" key={`${section.title}-${sectionIndex}`}>
+    <div className="review-section-title">
+      <FileText size={14} /> {section.title}
+    </div>
+    {section.items.map((item, itemIndex) => (
+      <div className="wizard-list-item" key={itemIndex}>
+        <div className="creative-input-group">
+          <input
+            className="creative-input"
+            value={item.heading}
+            onChange={(e) => {
+              const next = structuredClone(additionalSections);
+              next[sectionIndex].items[itemIndex].heading = e.target.value;
+              setAdditionalSections(next);
+            }}
+          />
+          <label className="creative-label">Heading</label>
+        </div>
+        <div className="creative-input-group">
+          <textarea
+            className="creative-input"
+            value={item.description}
+            onChange={(e) => {
+              const next = structuredClone(additionalSections);
+              next[sectionIndex].items[itemIndex].description = e.target.value;
+              setAdditionalSections(next);
+            }}
+          />
+          <label className="creative-label">Details</label>
+        </div>
+      </div>
+    ))}
+  </div>
+))}
+
                 {/* Edit options trigger */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem' }}>
                   <button className="photo-action-btn" onClick={() => setCurrentPath('choice')}>
                     Re-upload
                   </button>
                   <button className="cinematic-btn accent" onClick={handleFinishWizard}>
-                    Compile Portfolio <ArrowRight size={16} />
+                    Continue To Templates <ArrowRight size={16} />
                   </button>
                 </div>
               </div>
