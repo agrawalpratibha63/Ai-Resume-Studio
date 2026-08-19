@@ -4,6 +4,7 @@ import { CinematicLanding } from './landing/CinematicLanding';
 import { CreationWizard } from './wizard/CreationWizard';
 import { TemplateSelector } from './templates/TemplateSelector';
 import { LiveEditor } from './editor/LiveEditor';
+import { AuthGate } from './auth/AuthGate';
 
 type AppView = 'landing' | 'wizard' | 'selector' | 'editor';
 
@@ -52,8 +53,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <PortfolioProvider>
-      <AppContent />
-    </PortfolioProvider>
+    <AuthGate>
+      <PortfolioProvider>
+        <AppContent />
+      </PortfolioProvider>
+    </AuthGate>
   );
 }

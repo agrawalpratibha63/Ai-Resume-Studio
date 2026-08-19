@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import formidable, { type File } from 'formidable';
 import mammoth from 'mammoth';
 import { readFile } from 'node:fs/promises';
+import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 export const config = { api: { bodyParser: false } };
 
@@ -10,6 +11,18 @@ const allowedTypes = new Set([
   'application/pdf',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ]);
+const firebaseKeys = createRemoteJWKSet(new URL('https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com'));
+
+async function requireFirebaseUser(req: VercelRequest) {
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const authorization = Array.isArray(req.headers.authorization) ? req.headers.authorization[0] : req.headers.authorization;
+  const token = authorization?.startsWith('Bearer ') ? authorization.slice(7) : '';
+  if (!projectId || !token) throw new Error('UNAUTHORIZED');
+  await jwtVerify(token, firebaseKeys, {
+    issuer: `https://securetoken.google.com/${projectId}`,
+    audience: projectId,
+  });
+}
 
 const portfolioSchema = {
   type: 'object', additionalProperties: false,
@@ -36,6 +49,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!process.env.GEMINI_API_KEY) return res.status(503).json({ error: 'AI service is not configured yet.' });
 
   try {
+    await requireFirebaseUser(req);
     const form = formidable({ maxFiles: 1, maxFileSize: MAX_FILE_SIZE, allowEmptyFiles: false });
     const [, files] = await form.parse(req);
     const resume = firstFile(files.resume);
@@ -95,6 +109,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     } });
   } catch (error) {
     console.error('Resume parsing failed', error);
+    const errorCode = typeof error === 'object' && error && 'code' in error ? String(error.code) : '';
+    if (error instanceof Error && (error.message === 'UNAUTHORIZED' || errorCode === 'ERR_JWT_EXPIRED' || errorCode === 'ERR_JWS_SIGNATURE_VERIFICATION_FAILED')) {
+      return res.status(401).json({ error: 'Your session is invalid or expired. Please sign in again.' });
+    }
     return res.status(500).json({ error: 'Resume parsing failed. Please check the file and try again.' });
   }
 }
