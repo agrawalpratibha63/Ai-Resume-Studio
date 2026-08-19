@@ -61,9 +61,8 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
 
   // AI assistant triggers
   const triggerAi = async (field: string, currentText: string) => {
-    if (field !== 'bio') return;
     if (currentText.trim().length < 10) {
-      setAiError('Write a short bio first, then AI can refine it.');
+      setAiError('Write a short description first, then AI can refine it.');
       return;
     }
     setAiState({
@@ -76,13 +75,15 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
     setAiError(null);
     try {
       const token = await auth?.currentUser?.getIdToken();
-      const response = await fetch('/api/ai/assist', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` }, body: JSON.stringify({ task: 'refine-bio', bio: currentText, title: profile.title }) });
+      const isBio = field === 'bio';
+      const response = await fetch('/api/ai/assist', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` }, body: JSON.stringify(isBio ? { task: 'refine-bio', bio: currentText, title: profile.title } : { task: 'refine-description', description: currentText, kind: field.startsWith('experience-') ? 'experience' : 'project' }) });
       const payload = await response.json();
-      if (!response.ok || !payload.bio) throw new Error(payload.error || 'AI could not refine this bio.');
-      setAiState(prev => ({ ...prev, text: payload.bio, isGenerating: false }));
+      const refined = isBio ? payload.bio : payload.text;
+      if (!response.ok || !refined) throw new Error(payload.error || 'AI could not refine this text.');
+      setAiState(prev => ({ ...prev, text: refined, isGenerating: false }));
     } catch (error) {
       setAiState(prev => ({ ...prev, isActive: false, isGenerating: false }));
-      setAiError(error instanceof Error ? error.message : 'AI could not refine this bio.');
+      setAiError(error instanceof Error ? error.message : 'AI could not refine this text.');
     }
   };
 
