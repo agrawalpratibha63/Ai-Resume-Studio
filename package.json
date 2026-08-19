@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@vercel/node": "^5.3.7",
+    "firebase": "^12.17.1",
     "formidable": "^3.5.4",
     "framer-motion": "^13.1.0",
+    "jose": "^6.2.9",
     "lucide-react": "^1.31.0",
     "mammoth": "^1.11.0",
     "react": "^19.2.8",
