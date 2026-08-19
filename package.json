@@ -15,6 +15,7 @@
     "formidable": "^3.5.4",
     "framer-motion": "^13.1.0",
     "jose": "^6.2.9",
+    "jszip": "^3.10.1",
     "lucide-react": "^1.31.0",
     "mammoth": "^1.11.0",
     "react": "^19.2.8",

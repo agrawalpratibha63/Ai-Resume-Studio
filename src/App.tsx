@@ -48,12 +48,14 @@ function AppContent() {
       {view === 'selector' && (
         <TemplateSelector
           onSelectTemplate={handleSelectTemplate}
+          onExitHome={() => setView('landing')}
         />
       )}
 
       {view === 'editor' && (
         <LiveEditor
           onBackToSelector={() => setView('selector')}
+          onExitHome={() => setView('landing')}
         />
       )}
     </>

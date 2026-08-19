@@ -2,19 +2,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Check, Play, Code, ArrowLeft, X,
-  ExternalLink, Download, FileCode, CheckCircle, Palette, Type, Sliders, Maximize2, Minimize2 
+  ExternalLink, Download, FileCode, CheckCircle, Palette, Type, Sliders, Maximize2, Minimize2, House, Rocket
 } from 'lucide-react';
+import JSZip from 'jszip';
 import { usePortfolio } from '../context/PortfolioContext';
 import { TemplateRenderer } from '../templates/TemplateRenderer';
 import './LiveEditor.css';
 
 interface LiveEditorProps {
   onBackToSelector: () => void;
+  onExitHome: () => void;
 }
 
 type EditorState = 'editing' | 'compiling' | 'success';
 
-export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
+export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector, onExitHome }) => {
   const { portfolioData, setPortfolioData } = usePortfolio();
   const [editorState, setEditorState] = useState<EditorState>('editing');
   const [compileMessage, setCompileMessage] = useState('');
@@ -128,12 +130,18 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
       -webkit-font-smoothing: antialiased;
     }
     header { border-bottom: 1px solid #1c1c1e; padding-bottom: 3rem; margin-bottom: 4rem; }
+    .profile-row { display:flex; align-items:center; gap:1.5rem; }
+    .profile-photo { width:96px; height:96px; border-radius:50%; object-fit:cover; border:3px solid var(--accent); }
     h1 { font-size: 3rem; color: #fff; margin-bottom: 0.5rem; }
     h2 { font-size: 1rem; text-transform: uppercase; color: var(--accent); letter-spacing: 0.2em; margin-bottom: 2rem; }
     .about-section { font-size: 1.5rem; font-weight: 300; color: #e5e5e7; margin-bottom: 4rem; max-width: 800px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem; }
     .card { background: var(--bg-secondary); border: 1px solid #1c1c1e; padding: 2rem; border-radius: 4px; }
     .card h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .project-image { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:8px; margin-bottom:1.25rem; }
+    .badge { width:42px; height:42px; flex:0 0 42px; display:grid; place-items:center; border-radius:50%; background:var(--accent); color:#fff; font-weight:800; }
+    .credential { display:flex; align-items:center; gap:1rem; }
+    .credential img { width:76px; height:52px; object-fit:cover; border-radius:6px; }
     .tag { display: inline-block; font-size: 0.65rem; background: rgba(255,255,255,0.05); padding: 0.2rem 0.5rem; margin-right: 0.3rem; border: 1px solid rgba(255,255,255,0.1); }
     footer { border-top: 1px solid #1c1c1e; padding-top: 3rem; margin-top: 4rem; text-align: center; font-size: 0.8rem; color: var(--text-secondary); }
     a { color: var(--accent); text-decoration: none; }
@@ -141,8 +149,10 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
 </head>
 <body>
   <header>
-    <h1>${d.profile.name}</h1>
-    <p style="color: var(--text-secondary); font-size: 1.1rem;">${d.profile.title} | ${d.profile.location}</p>
+    <div class="profile-row">
+      ${d.profile.photo ? `<img class="profile-photo" src="${d.profile.photo}" alt="${d.profile.name}">` : ''}
+      <div><h1>${d.profile.name}</h1><p style="color: var(--text-secondary); font-size: 1.1rem;">${[d.profile.title, d.profile.location].filter(Boolean).join(' · ')}</p></div>
+    </div>
   </header>
 
   <main>
@@ -155,6 +165,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
     <section class="grid">
       ${d.projects.map(p => `
         <div class="card">
+          ${p.image ? `<img class="project-image" src="${p.image}" alt="${p.title}">` : ''}
           <h3>${p.title}</h3>
           <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">${p.description}</p>
           <div>
@@ -163,6 +174,10 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
         </div>
       `).join('')}
     </section>
+
+    ${d.certificates.length ? `<h2 style="margin-bottom:1.5rem;">Certifications</h2><section class="grid">${d.certificates.map(c => `<div class="card credential"><span class="badge">✓</span>${c.image ? `<img src="${c.image}" alt="${c.title}">` : ''}<div><h3>${c.title}</h3><p style="color:var(--text-secondary)">${[c.issuer,c.date].filter(Boolean).join(' · ')}</p></div></div>`).join('')}</section>` : ''}
+
+    ${d.education.length ? `<h2 style="margin-bottom:1.5rem;">Education</h2><section class="grid">${d.education.map(e => `<div class="card"><h3>${e.school}</h3><p>${e.degree}</p><small style="color:var(--text-secondary)">${e.period}</small></div>`).join('')}</section>` : ''}
 
     <h2 style="margin-bottom: 1.5rem;">Capabilities</h2>
     <div style="margin-bottom: 4rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
@@ -204,6 +219,26 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+  };
+
+  const handleDownloadZip = async () => {
+    const zip = new JSZip();
+    zip.file('index.html', generateStaticHtml());
+    zip.file('vercel.json', JSON.stringify({ cleanUrls: true }, null, 2));
+    zip.file('README.md', `# ${portfolioData.profile.name || 'My'} Portfolio\n\nReady to deploy. Upload this folder to GitHub and import it in Vercel, or drag the folder into Netlify Drop.`);
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const element = document.createElement('a');
+    element.href = URL.createObjectURL(blob);
+    element.download = `${(portfolioData.profile.name || 'my').toLowerCase().replace(/[^a-z0-9]+/g, '-')}-portfolio.zip`;
+    document.body.appendChild(element);
+    element.click();
+    URL.revokeObjectURL(element.href);
+    element.remove();
+  };
+
+  const openDeployFlow = () => {
+    void handleDownloadZip();
+    window.open('https://app.netlify.com/drop', '_blank', 'noopener,noreferrer');
   };
 
   // Switch template
@@ -248,6 +283,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
                   </button>
                   <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Tuning Console</span>
                 </div>
+                <button className="exit-home-btn editor-exit-home" onClick={onExitHome}><House size={18} /> Exit to Home</button>
 
                 {/* Section 1: Template Archetypes */}
                 <div>
@@ -326,6 +362,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
                     https://{portfolioData.profile.name.toLowerCase().replace(/\s+/g, '')}.identity.aura
                   </div>
                   <div className="preview-actions">
+                    <button className="exit-home-btn compact-exit" onClick={onExitHome}><House size={16} /> Home</button>
                     <button className="photo-action-btn" onClick={() => setFullViewportMode(!fullViewportMode)}>{fullViewportMode ? 'Show Controls' : 'Hide Controls'}</button>
                     <button className="photo-action-btn fullscreen-btn" onClick={toggleBrowserFullscreen}>
                       {isBrowserFullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
@@ -373,6 +410,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
+            <button className="exit-home-btn success-exit" onClick={onExitHome}><House size={18} /> Exit to Home</button>
             <div className="success-container">
               <div className="success-icon-wrap">
                 <CheckCircle size={36} strokeWidth={1.5} />
@@ -402,6 +440,14 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
                   Export static code <FileCode size={14} />
                 </button>
 
+                <button className="cinematic-btn accent" onClick={handleDownloadZip}>
+                  Download Website ZIP <Download size={15} />
+                </button>
+
+                <button className="cinematic-btn deploy-btn" onClick={openDeployFlow}>
+                  Deploy & Get Link <Rocket size={15} />
+                </button>
+
                 <button 
                   className="photo-action-btn"
                   onClick={() => setEditorState('editing')}
@@ -429,6 +475,9 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector }) => {
                   </pre>
 
                   <div style={{ display: 'flex', gap: '1rem', alignSelf: 'flex-end' }}>
+                    <button className="cinematic-btn accent" onClick={handleDownloadZip}>
+                      <Download size={13} /> Download ZIP
+                    </button>
                     <button className="photo-action-btn" onClick={handleDownloadCode} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       <Download size={12} /> Download .html
                     </button>

@@ -28,19 +28,36 @@
 
 .wizard-exit {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  background: transparent;
-  border: none;
+  font-size: 0.78rem;
+  color: #fff;
+  background: #e63946;
+  border: 1px solid #ff6874;
   cursor: pointer;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.08em;
+  padding: .85rem 1.15rem;
+  min-height: 48px;
+  border-radius: 999px;
+  font-weight: 800;
+  box-shadow: 0 10px 28px rgba(230,57,70,.28);
   text-transform: uppercase;
   transition: var(--transition-fast);
 }
 
 .wizard-exit:hover {
-  color: var(--text-primary);
+  color: #fff;
+  transform: translateY(-2px);
 }
+
+.import-media-upload{display:flex;align-items:center;gap:1rem;padding:1rem;margin-bottom:1.25rem;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(255,255,255,.035);flex-wrap:wrap}
+.import-media-upload>div:not(.certificate-badge-preview){display:flex;flex:1;min-width:160px;flex-direction:column;gap:.2rem}
+.import-media-upload span{font-size:.72rem;color:var(--text-muted)}
+.import-profile-preview{width:64px;height:64px;object-fit:cover;border-radius:50%;border:2px solid var(--accent-color)}
+.import-project-preview{width:76px;height:54px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,.18)}
+.media-upload-btn,.media-remove-btn{min-height:42px;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem .9rem;border-radius:999px;font-size:.75rem;font-weight:800;cursor:pointer}
+.media-upload-btn{background:#e63946;color:#fff;border:1px solid #ff6874}
+.media-remove-btn{background:#191919;color:#fff;border:1px solid rgba(255,255,255,.22)}
+.certificate-badge-preview{width:48px;height:48px;flex:0 0 48px!important;display:grid!important;place-items:center;border-radius:50%;background:#e63946;color:#fff;box-shadow:0 0 0 6px rgba(230,57,70,.13)}
+@media(max-width:640px){.wizard-header{padding:1rem}.wizard-body{padding:2rem 1rem}.wizard-exit{font-size:.7rem;padding:.7rem .9rem}.import-media-upload{align-items:flex-start}.media-upload-btn,.media-remove-btn{width:100%}}
 
 /* Main Form Canvas */
 .wizard-body {

@@ -470,6 +470,16 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
                 {/* Profile review */}
                 <div className="review-section">
                   <div className="review-section-title"><User size={14} /> Profile Identity</div>
+                  <div className="import-media-upload">
+                    {profile.photo ? <img src={profile.photo} alt="Profile preview" className="import-profile-preview" /> : <User size={30} />}
+                    <div>
+                      <strong>Profile photo</strong>
+                      <span>Optional · JPG, PNG or WEBP</span>
+                    </div>
+                    <input type="file" id="import-profile-photo" accept="image/*" hidden onChange={handlePhotoUpload} />
+                    <label htmlFor="import-profile-photo" className="media-upload-btn"><Upload size={16} /> {profile.photo ? 'Replace photo' : 'Upload photo'}</label>
+                    {profile.photo && <button type="button" className="media-remove-btn" onClick={() => setProfile(p => ({ ...p, photo: '' }))}><X size={15} /> Remove</button>}
+                  </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                     <div className="creative-input-group">
                       <input 
@@ -607,6 +617,13 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
   ) : (
     projects.map((project, idx) => (
       <div key={idx} className="wizard-list-item">
+        <div className="import-media-upload compact-media-upload">
+          {project.image ? <img src={project.image} alt={`${project.title || 'Project'} preview`} className="import-project-preview" /> : <FileText size={26} />}
+          <div><strong>Project cover</strong><span>Optional image for this project</span></div>
+          <input type="file" id={`import-project-${idx}`} accept="image/*" hidden onChange={(e) => handleProjectImageUpload(idx, e)} />
+          <label htmlFor={`import-project-${idx}`} className="media-upload-btn"><Upload size={15} /> {project.image ? 'Replace' : 'Upload'}</label>
+          {project.image && <button type="button" className="media-remove-btn" onClick={() => updateProjectField(idx, 'image', '')}><X size={14} /></button>}
+        </div>
         <div className="creative-input-group">
           <input
             className="creative-input"
@@ -734,6 +751,13 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
   ) : (
     certificates.map((cert, idx) => (
       <div key={idx} className="wizard-list-item">
+        <div className="import-media-upload compact-media-upload certificate-media-upload">
+          {cert.image ? <img src={cert.image} alt={`${cert.title || 'Certificate'} preview`} className="import-project-preview" /> : <div className="certificate-badge-preview"><Check size={20} /></div>}
+          <div><strong>Certificate badge</strong><span>Badge is automatic; credential image is optional</span></div>
+          <input type="file" id={`import-certificate-${idx}`} accept="image/*" hidden onChange={(e) => handleCertificateImageUpload(idx, e)} />
+          <label htmlFor={`import-certificate-${idx}`} className="media-upload-btn"><Upload size={15} /> {cert.image ? 'Replace' : 'Upload image'}</label>
+          {cert.image && <button type="button" className="media-remove-btn" onClick={() => updateCertificateField(idx, 'image', '')}><X size={14} /></button>}
+        </div>
         <div className="creative-input-group">
           <input
             className="creative-input"

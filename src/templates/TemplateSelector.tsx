@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { House, ArrowLeft } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 import type { PortfolioData } from '../context/PortfolioContext';
 import { TemplateRenderer } from './TemplateRenderer';
@@ -7,9 +8,10 @@ import './TemplateSelector.css';
 
 interface TemplateSelectorProps {
   onSelectTemplate: (templateName: string) => void;
+  onExitHome: () => void;
 }
 
-export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTemplate }) => {
+export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTemplate, onExitHome }) => {
   const { portfolioData } = usePortfolio();
   const [showRevealText, setShowRevealText] = useState(true);
 
@@ -37,6 +39,10 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTemp
 
   return (
     <div className="selector-viewport">
+      <div className="selector-nav-actions">
+        <button className="exit-home-btn" onClick={onExitHome}><House size={19} /> Exit to Home</button>
+        {!showRevealText && <button className="secondary-nav-btn" onClick={onExitHome}><ArrowLeft size={18} /> Back</button>}
+      </div>
       <AnimatePresence mode="wait">
         {showRevealText ? (
           <motion.div 

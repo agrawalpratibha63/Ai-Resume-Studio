@@ -613,8 +613,12 @@ const ThemeTemplate: React.FC<TplProps & { theme: Theme }> = ({ data, isEditMode
                 <h4 className="pt-credtitle">Certifications</h4>
                 {data.certificates.map((c, i) => (
                   <div key={i} className="pt-creditem">
-                    <strong>{c.title}</strong>
-                    <span>{c.issuer} · {c.date}</span>
+                    <div className="pt-cert-badge" aria-hidden="true">✓</div>
+                    {c.image && <img className="pt-cert-image" src={c.image} alt={`${c.title} credential`} />}
+                    <div className="pt-cert-copy">
+                      <strong>{c.title}</strong>
+                      <span>{[c.issuer, c.date].filter(Boolean).join(' · ')}</span>
+                    </div>
                   </div>
                 ))}
               </Reveal>
