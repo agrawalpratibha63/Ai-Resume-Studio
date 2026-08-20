@@ -612,8 +612,10 @@ const ThemeTemplate: React.FC<TplProps & { theme: Theme }> = ({ data, isEditMode
               <Reveal dir="right" className="pt-credcol">
                 <h4 className="pt-credtitle">Certifications</h4>
                 {data.certificates.map((c, i) => (
-                  <div key={i} className="pt-creditem">
-                    <div className="pt-cert-badge" aria-hidden="true">✓</div>
+                  <div key={i} className="pt-cert-row">
+                    <div className="pt-cert-badge" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
                     {c.image && <img className="pt-cert-image" src={c.image} alt={`${c.title} credential`} />}
                     <div className="pt-cert-copy">
                       <strong>{c.title}</strong>

@@ -309,7 +309,24 @@
   .pt-credgrid { grid-template-columns: 1fr; gap: 2rem; }
   .pt-showcase-ring { display: none; }
 }
-.pt-cert-badge{flex:0 0 2.35rem;width:2.35rem;height:2.35rem;border-radius:50%;display:grid;place-items:center;background:var(--pt-accent);color:#fff;font-weight:900;box-shadow:0 0 0 5px color-mix(in srgb,var(--pt-accent) 16%,transparent)}
-.pt-cert-image{width:4.25rem;height:3rem;object-fit:cover;border-radius:.45rem;border:1px solid color-mix(in srgb,var(--pt-accent) 35%,transparent)}
-.pt-cert-copy{min-width:0;display:flex;flex-direction:column;gap:.2rem}
-.pt-creditem:has(.pt-cert-badge){display:flex;align-items:center;gap:1rem}
+.pt-cert-badge {
+  flex: 0 0 2.35rem;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pt-accent, #e63946);
+  color: #fff;
+  font-weight: 900;
+  font-size: 1rem;
+  box-shadow: 0 0 0 5px rgba(255,255,255,0.08), 0 4px 14px rgba(0,0,0,0.35);
+  flex-shrink: 0;
+}
+.pt-cert-image { width: 4.25rem; height: 3rem; object-fit: cover; border-radius: .45rem; border: 1px solid rgba(255,255,255,0.15); flex-shrink: 0; }
+.pt-cert-copy { min-width: 0; display: flex; flex-direction: column; gap: .2rem; }
+/* Cert rows are always horizontal with badge; education items stay column */
+.pt-cert-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.pt-cert-row strong { font-size: 1rem; }
+.pt-cert-row span { font-size: 0.82rem; color: var(--pt-muted); }

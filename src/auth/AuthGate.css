@@ -1,6 +1,6 @@
 .auth-nav {
   position: fixed;
-  z-index: 10000;
+  z-index: 900;
   top: 1rem;
   right: 1rem;
   display: flex;
@@ -46,4 +46,9 @@
   .auth-nav { top: .75rem; right: .75rem; }
   .user-session span { display: none; }
   .auth-error-toast { top: 4.2rem; right: .75rem; }
+}
+
+/* Hide auth nav when editor, wizard or selector is active — they have their own navigation */
+body.in-editor .auth-nav {
+  display: none;
 }
