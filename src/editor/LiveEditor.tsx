@@ -199,7 +199,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector, onExit
 
   <footer>
     <p>Get in touch: <a href="mailto:${d.contact.email}">${d.contact.email}</a></p>
-    <p style="margin-top: 1rem;">Generated via AURA Identity Engine</p>
+    <p style="margin-top: 1rem;">Generated via PortfolioStudio</p>
   </footer>
 </body>
 </html>`;
@@ -359,7 +359,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector, onExit
                     <div className="browser-dot" />
                   </div>
                   <div className="browser-address">
-                    https://{portfolioData.profile.name.toLowerCase().replace(/\s+/g, '')}.identity.aura
+                    https://{portfolioData.profile.name.toLowerCase().replace(/\s+/g, '')}.portfoliostudio.app
                   </div>
                   <div className="preview-actions">
                     <button className="exit-home-btn compact-exit" onClick={onExitHome}><House size={16} /> Home</button>
@@ -372,7 +372,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector, onExit
                 </div>
                 
                 {/* Live rendering panel */}
-                <div style={{ height: 'calc(100vh - 6rem)', overflowY: 'auto' }}>
+                <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
                   <TemplateRenderer 
                     data={portfolioData} 
                     isEditMode={true} 

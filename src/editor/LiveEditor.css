@@ -59,14 +59,16 @@
   background: #000;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
 }
 .editor-controls { background:linear-gradient(145deg,rgba(18,18,18,.9),rgba(7,7,7,.88)); }
 .browser-header-mock { background:rgba(10,10,10,.88); }
 
-.mock-browser-frame:fullscreen { border:0; border-radius:0; width:100vw; height:100vh; background:#000; }
-.mock-browser-frame:fullscreen > div:last-child { height:calc(100vh - 54px) !important; }
+.mock-browser-frame:fullscreen { border:0; border-radius:0; width:100vw; height:100vh; background:#000; overflow:hidden; }
+.mock-browser-frame:fullscreen > div:last-child { flex:1; overflow-y:auto; }
 .preview-actions { display:flex; align-items:center; gap:.5rem; }
 .fullscreen-btn { display:inline-flex; align-items:center; gap:.4rem; font-size:.65rem; }
 .editor-exit-home{width:100%;min-height:48px}
@@ -83,6 +85,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
+  z-index: 10;
+  position: relative;
+  border-radius: 6px 6px 0 0;
+  overflow: visible;
 }
 
 .browser-dots {

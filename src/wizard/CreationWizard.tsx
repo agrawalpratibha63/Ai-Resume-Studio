@@ -356,7 +356,7 @@ export const CreationWizard: React.FC<CreationWizardProps> = ({ onBackToLanding,
   return (
     <div className="wizard-viewport">
       <div className="wizard-header">
-        <div className="wizard-logo">AURA</div>
+        <div className="wizard-logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:'inline',verticalAlign:'middle',marginRight:'6px'}}><rect x="3" y="3" width="8" height="8" rx="2" fill="#e63946"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#e63946" opacity="0.6"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#e63946" opacity="0.6"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#e63946" opacity="0.35"/></svg><span style={{fontWeight:700}}>Portfolio</span>Studio</div>
         <button className="wizard-exit" onClick={onBackToLanding}>Exit To Landing</button>
       </div>
 

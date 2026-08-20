@@ -11,7 +11,7 @@ const steps = [
 
 export default function PremiumHero({ onGetStarted }: Props) {
   return <main className="studio-home">
-    <nav className="studio-nav"><a className="studio-brand" href="#studio-top"><span>PORTFIFY</span> studio</a><div className="studio-links"><a href="#how">How it works</a><a href="#create">Create</a><a href="#templates">Templates</a></div><button onClick={onGetStarted}>Start building <ArrowRight size={15}/></button></nav>
+    <nav className="studio-nav"><a className="studio-brand" href="#studio-top"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{display:'inline',verticalAlign:'middle',marginRight:'6px'}}><rect x="3" y="3" width="8" height="8" rx="2" fill="#e63946"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#e63946" opacity="0.6"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#e63946" opacity="0.6"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#e63946" opacity="0.35"/></svg><span>Portfolio</span>Studio</a><div className="studio-links"><a href="#how">How it works</a><a href="#create">Create</a><a href="#templates">Templates</a></div><button onClick={onGetStarted}>Start building <ArrowRight size={15}/></button></nav>
     <section className="studio-hero" id="studio-top">
       <motion.div className="studio-kicker" initial={{opacity:0,y:12}} whileInView={{opacity:1,y:0}} viewport={{once:true}}>A portfolio studio for real people</motion.div>
       <motion.h1 initial={{opacity:0,y:28}} whileInView={{opacity:1,y:0}} viewport={{once:true}}>Your experience,<br/><em>beautifully presented.</em></motion.h1>
@@ -28,6 +28,6 @@ export default function PremiumHero({ onGetStarted }: Props) {
       <article><LayoutTemplate/><div><h3>Curated templates</h3><p>Responsive layouts designed for different professions.</p></div></article><article><Sparkles/><div><h3>Thoughtful AI assistance</h3><p>Improve your words without replacing your voice or inventing facts.</p></div></article><article><WandSparkles/><div><h3>Easy customisation</h3><p>Adjust content, colours and presentation before downloading.</p></div></article>
     </div></section>
     <section className="studio-final"><span>Ready when you are</span><h2>A professional home for your work.</h2><p>Start with what you have. Refine it as you grow.</p><button onClick={onGetStarted}>Build my portfolio <ArrowRight size={17}/></button></section>
-    <footer className="studio-footer"><div className="studio-brand"><span>PORTFIFY</span> studio</div><p>Resume to portfolio, made simple.</p><small>© 2026 Portfify Studio</small></footer>
+    <footer className="studio-footer"><div className="studio-brand"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{display:'inline',verticalAlign:'middle',marginRight:'5px'}}><rect x="3" y="3" width="8" height="8" rx="2" fill="#e63946"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#e63946" opacity="0.6"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#e63946" opacity="0.6"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#e63946" opacity="0.35"/></svg><span>Portfolio</span>Studio</div><p>Resume to portfolio, made simple.</p><small>© 2026 PortfolioStudio</small></footer>
   </main>;
 }
