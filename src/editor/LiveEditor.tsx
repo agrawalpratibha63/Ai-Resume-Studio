@@ -25,6 +25,7 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector, onExit
   const [fullViewportMode, setFullViewportMode] = useState(false);
   const [isBrowserFullscreen, setIsBrowserFullscreen] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
+  const [isDeploying, setIsDeploying] = useState(false);
 
   useEffect(() => {
     const syncFullscreen = () => setIsBrowserFullscreen(Boolean(document.fullscreenElement));
@@ -236,9 +237,14 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector, onExit
     element.remove();
   };
 
-  const openDeployFlow = () => {
-    void handleDownloadZip();
-    window.open('https://app.netlify.com/drop', '_blank', 'noopener,noreferrer');
+  const openDeployFlow = async () => {
+    setIsDeploying(true);
+    try {
+      await handleDownloadZip();
+      window.open('https://app.netlify.com/drop', '_blank', 'noopener,noreferrer');
+    } finally {
+      setTimeout(() => setIsDeploying(false), 3000);
+    }
   };
 
   // Switch template
@@ -367,6 +373,15 @@ export const LiveEditor: React.FC<LiveEditorProps> = ({ onBackToSelector, onExit
                     <button className="photo-action-btn fullscreen-btn" onClick={toggleBrowserFullscreen}>
                       {isBrowserFullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
                       {isBrowserFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+                    </button>
+                    <button
+                      className="deploy-live-btn"
+                      onClick={openDeployFlow}
+                      disabled={isDeploying}
+                      title="Download your portfolio ZIP and deploy to Netlify for a free live link"
+                    >
+                      <Rocket size={13} />
+                      {isDeploying ? 'Preparing...' : 'Get Live Link'}
                     </button>
                   </div>
                 </div>

@@ -320,7 +320,7 @@ const heroY = useTransform(
   // ============================================
   const canvasVeilOpacity = useTransform(
     smoothScrollProgress,
-    [0.93, 0.97],
+    [0.88, 0.95],
     [0, 1]
   );
 
@@ -329,14 +329,14 @@ const heroY = useTransform(
   // ============================================
   const finalCtaOpacity = useTransform(
     smoothScrollProgress,
-    [0.96, 0.98],
+    [0.86, 0.95],
     [0, 1]
   );
 
   const finalCtaY = useTransform(
     smoothScrollProgress,
-    [0.96, 0.98],
-    [30, 0]
+    [0.86, 0.95],
+    [40, 0]
   );
 
   return (

@@ -1,7 +1,7 @@
 .landing-container {
   position: relative;
   width: 100%;
-  min-height: 600vh; /* Expansive scroll runway for cinematic control */
+  min-height: 500vh; /* Reduced from 600vh — tighter scroll runway */
   background-color: var(--bg-primary);
 }
 

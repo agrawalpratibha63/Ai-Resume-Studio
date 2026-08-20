@@ -76,7 +76,34 @@
 .success-exit{position:fixed;top:1.25rem;left:1.25rem;z-index:1200}
 .deploy-btn{background:#fff!important;color:#090909!important;-webkit-text-fill-color:#090909!important;border-color:#fff!important}
 .preview-actions .photo-action-btn{min-height:40px;padding:.55rem .8rem;border-color:rgba(255,255,255,.28);color:#fff;background:#171717}
-@media(max-width:760px){.browser-header-mock{padding:.65rem;gap:.6rem;flex-wrap:wrap}.browser-address{order:3;width:100%;padding:.3rem .6rem}.preview-actions{margin-left:auto;flex-wrap:wrap}.compact-exit,.preview-actions .photo-action-btn{min-height:42px!important}.success-exit{top:.75rem;left:.75rem}.success-actions{padding:0 1rem}}
+
+/* 🚀 Get Live Link button — prominently styled in browser header */
+.deploy-live-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 40px;
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid #e63946;
+  background: linear-gradient(135deg, #e63946, #c1121f);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, opacity .2s;
+  box-shadow: 0 0 18px rgba(230,57,70,.45), 0 4px 14px rgba(0,0,0,.4);
+  white-space: nowrap;
+}
+.deploy-live-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px rgba(230,57,70,.65), 0 8px 20px rgba(0,0,0,.5);
+}
+.deploy-live-btn:disabled { opacity: .65; cursor: wait; }
+
+@media(max-width:760px){.browser-header-mock{padding:.65rem;gap:.6rem;flex-wrap:wrap}.browser-address{order:3;width:100%;padding:.3rem .6rem}.preview-actions{margin-left:auto;flex-wrap:wrap}.compact-exit,.preview-actions .photo-action-btn{min-height:42px!important}.deploy-live-btn{min-height:42px;font-size:.65rem}.success-exit{top:.75rem;left:.75rem}.success-actions{padding:0 1rem}}
 
 .browser-header-mock {
   background: #0c0c0e;
