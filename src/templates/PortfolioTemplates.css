@@ -46,7 +46,7 @@
 }
 
 .pt-socials { display: flex; gap: 1.25rem; align-items: center; margin-top: 1.75rem; flex-wrap: wrap; }
-.pt-socials a { color: var(--pt-accent); text-decoration: none; opacity: 0.85; transition: opacity 0.25s, transform 0.25s; display: inline-flex; }
+.pt-socials a { color: var(--pt-accent); text-decoration: none; opacity: 0.85; transition: opacity 0.25s, transform 0.25s; display: inline-flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
 .pt-socials a:hover { opacity: 1; transform: translateY(-2px); }
 
 .pt-skillrow { display: flex; flex-wrap: wrap; gap: 0.85rem; }
@@ -78,7 +78,7 @@
 .pt-creditem span { font-size: 0.82rem; color: var(--pt-muted); }
 
 .pt-footer { position: relative; z-index: 2; text-align: center; padding: 7rem 2rem 5rem; }
-.pt-footer-email { display: inline-block; font-family: var(--pt-display); font-size: clamp(1.4rem, 4vw, 2.6rem); color: var(--pt-text); text-decoration: none; border-bottom: 2px solid var(--pt-accent); padding-bottom: 0.3rem; margin: 0.5rem 0; }
+.pt-footer-email { display: inline-block; font-family: var(--pt-display); font-size: clamp(1.4rem, 4vw, 2.6rem); color: var(--pt-text); text-decoration: none; border-bottom: 2px solid var(--pt-accent); padding-bottom: 0.3rem; margin: 0.5rem 0; word-break: break-all; overflow-wrap: anywhere; max-width: 100%; }
 .pt-footer .pt-socials { justify-content: center; margin-top: 2rem; }
 
 .pt-hero-name { font-family: var(--pt-display); font-weight: 750; font-size: clamp(2.25rem, 5.5vw, 4.8rem); line-height: 1.05; letter-spacing: -.035em; color: var(--pt-text); }
@@ -308,6 +308,21 @@
   .pt-hero { padding: 6rem 1.25rem 4rem; }
   .pt-credgrid { grid-template-columns: 1fr; gap: 2rem; }
   .pt-showcase-ring { display: none; }
+}
+
+/* 480px — ultra-compact mobile phones */
+@media (max-width: 480px) {
+  .pt-section { padding: 3rem 1rem; }
+  .pt-hero { padding: 4rem 1rem 3rem; }
+  .pt-hero-name { font-size: clamp(1.75rem, 9vw, 2.5rem); }
+  .pt-about { font-size: 1rem; }
+  .pt-glasspanel { padding: 2rem 1.25rem; }
+  .pt-schematic-frame { padding: 2rem 1rem; }
+  .pt-glitch-content { padding: 2rem 1.25rem; }
+  .pt-footer { padding: 3rem 1rem 2.5rem; }
+  .pt-footer-email { font-size: clamp(1rem, 5vw, 1.4rem); }
+  .pt-tags span { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+  .pt-extra-link { min-height: 44px; display: inline-flex; align-items: center; }
 }
 .pt-cert-badge {
   flex: 0 0 2.35rem;

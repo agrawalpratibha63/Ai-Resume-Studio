@@ -57,7 +57,32 @@
 .media-upload-btn{background:#e63946;color:#fff;border:1px solid #ff6874}
 .media-remove-btn{background:#191919;color:#fff;border:1px solid rgba(255,255,255,.22)}
 .certificate-badge-preview{width:48px;height:48px;flex:0 0 48px!important;display:grid!important;place-items:center;border-radius:50%;background:#e63946;color:#fff;box-shadow:0 0 0 6px rgba(230,57,70,.13)}
-@media(max-width:640px){.wizard-header{padding:1rem}.wizard-body{padding:2rem 1rem}.wizard-exit{font-size:.7rem;padding:.7rem .9rem}.import-media-upload{align-items:flex-start}.media-upload-btn,.media-remove-btn{width:100%}}
+@media(max-width:768px){
+  .wizard-header{padding:1rem 1.5rem}
+  .wizard-body{padding:2rem 1.25rem}
+  .wizard-exit{font-size:.7rem;padding:.7rem .9rem}
+  .import-media-upload{align-items:flex-start}
+  .media-upload-btn,.media-remove-btn{width:100%}
+  .wizard-footer{flex-wrap:wrap;gap:1rem}
+  .ai-options{flex-direction:column}
+  .scanner-container{padding:2rem 1rem}
+  .photo-uploader{padding:2rem 1rem}
+}
+@media(max-width:640px){
+  .wizard-header{padding:.85rem 1rem}
+  .wizard-body{padding:1.5rem 1rem}
+  .import-review-title{font-size:1.5rem}
+}
+@media(max-width:480px){
+  .wizard-header{padding:.75rem}
+  .wizard-body{padding:1rem .75rem}
+  .wizard-exit{font-size:.65rem;padding:.65rem .8rem;min-height:44px}
+  .step-title{font-size:1.6rem}
+  .photo-action-btn{min-height:44px!important;padding:.65rem .8rem!important}
+  .ai-trigger-btn{min-height:44px;padding:.65rem .75rem}
+  .recommended-skill-list button{min-height:40px;padding:.6rem .8rem}
+  .tag-delete-btn,.item-delete-btn{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+}
 
 /* Main Form Canvas */
 .wizard-body {
@@ -86,6 +111,18 @@
   max-width: 1100px;
   gap: 3rem;
   padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .split-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+  .path-option {
+    min-height: 200px;
+    padding: 2rem 1.5rem;
+  }
 }
 
 .path-option {

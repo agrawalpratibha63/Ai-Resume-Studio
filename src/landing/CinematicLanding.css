@@ -3,7 +3,9 @@
   width: 100%;
   min-height: 500vh; /* Reduced from 600vh — tighter scroll runway */
   background-color: var(--bg-primary);
+  overflow-x: hidden;
 }
+
 
 /* Loading Overlay */
 .cinematic-loader {
@@ -130,22 +132,18 @@
 /* Moment Styles */
 .editorial-title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 7vw, 8rem);
+  font-size: clamp(2.5rem, 7vw, 8rem);
   font-weight: 800;
   text-transform: uppercase;
   line-height: 1;
   text-align: center;
   letter-spacing: 0;
   color: var(--text-primary);
-
   width: 100%;
   overflow: visible;
-
   position: relative;
-  left: 200px;   /* <-- Add this */
+  left: 0; /* was 200px — removed to fix mobile overflow */
 }
-
-
 
 .editorial-serif {
   font-family: var(--font-serif);
@@ -303,26 +301,18 @@
 }
 
 .hero-main-title{
-
-    position:relative;
-
-    left:0;
-
-    width:100%;
-
-    text-align:center;
-
-    font-size:clamp(4rem,8vw,7rem);
-
-    line-height:0.95;
-
-    font-weight:800;
-
-    color:white;
-
-    text-transform:uppercase;
-
-    margin:0;
+  position:relative;
+  left:0;
+  width:100%;
+  text-align:center;
+  font-size:clamp(2.5rem,8vw,7rem);
+  line-height:0.95;
+  font-weight:800;
+  color:white;
+  text-transform:uppercase;
+  margin:0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .hero-outline{
@@ -350,6 +340,10 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 8px 25px rgba(255, 59, 59, 0.35);
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-build-btn:hover {
@@ -360,4 +354,26 @@
 
 .hero-build-btn:active {
   transform: scale(0.97);
+}
+
+/* ============ MOBILE BREAKPOINTS ============ */
+@media (max-width: 768px) {
+  .hero-intro-layer {
+    padding-left: 5%;
+    padding-right: 5%;
+    align-items: flex-start;
+    padding-top: 15vh;
+  }
+  .hero-content { max-width: 100%; }
+  .hero-small { font-size: .7rem; letter-spacing: .2em; margin-bottom: 16px; }
+  .hero-main-title { font-size: clamp(2rem, 10vw, 4rem); line-height: 1; }
+  .hero-description { font-size: .9rem; margin-top: 16px; max-width: 100%; }
+  .hero-build-btn { width: 100%; font-size: .95rem; }
+}
+
+@media (max-width: 480px) {
+  .hero-intro-layer { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .hero-main-title { font-size: clamp(1.8rem, 11vw, 3rem); }
+  .scroll-indicator { display: none; }
+  .moment-wrapper { padding: 1rem; max-width: 100%; }
 }

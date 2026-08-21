@@ -9,6 +9,20 @@
   position: relative;
 }
 
+/* Mobile: add top padding so fixed nav buttons don't overlap content */
+@media (max-width: 768px) {
+  .selector-viewport { padding: 5.5rem 4vw 3rem; }
+  .selector-header { margin-bottom: 2rem; }
+  .selector-header h1 { font-size: 1.8rem !important; }
+}
+
+@media (max-width: 480px) {
+  .selector-viewport { padding: 5rem 1.25rem 2rem; }
+  .selector-header h1 { font-size: 1.5rem !important; }
+  .selector-nav-actions { gap: .45rem; }
+  .exit-home-btn, .secondary-nav-btn { padding: .6rem .9rem; font-size: .72rem; min-height: 44px; }
+}
+
 .selector-nav-actions{position:fixed;top:1.25rem;left:1.25rem;z-index:300;display:flex;gap:.7rem;flex-wrap:wrap}
 .exit-home-btn,.secondary-nav-btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:.55rem;border-radius:999px;padding:.75rem 1.15rem;font:800 .78rem/1 var(--font-sans);letter-spacing:.04em;cursor:pointer;transition:.2s ease}
 .exit-home-btn{background:#e63946!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border:1px solid #ff6874;box-shadow:0 10px 30px rgba(230,57,70,.32)}
@@ -100,6 +114,19 @@
   transform: scale(0.26) translateY(-5%); /* Parallax scroll simulate inside card on hover */
 }
 
+/* Force ALL framer-motion animated children visible inside mini-preview.
+   whileInView never fires inside the scaled container because
+   the Intersection Observer doesn't see it enter the viewport.
+   This ensures template content (hero, sections, skills) is always rendered. */
+.mini-preview-scale > * {
+  opacity: 1 !important;
+}
+.mini-preview-scale [style*="opacity: 0"],
+.mini-preview-scale [style*="opacity:0"] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 /* Card details metadata */
 .tpl-card-details {
   padding: 1.5rem;
@@ -142,4 +169,12 @@
 .tpl-select-card:hover .use-design-btn {
   border-color: var(--accent-color);
   background: var(--accent-color);
+}
+
+/* Mobile selector-grid use-design-btn touch target fix */
+@media (max-width: 600px) {
+  .use-design-btn { min-height: 44px; padding: .6rem 1.2rem; font-size: .72rem; }
+  .tpl-card-details { padding: 1rem; flex-direction: column; align-items: flex-start; gap: .75rem; }
+  .tpl-card-details > * { width: 100%; }
+  .use-design-btn { width: 100%; justify-content: center; text-align: center; }
 }

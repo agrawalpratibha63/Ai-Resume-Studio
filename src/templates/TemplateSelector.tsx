@@ -1,10 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { House, ArrowLeft } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 import type { PortfolioData } from '../context/PortfolioContext';
 import { TemplateRenderer } from './TemplateRenderer';
 import './TemplateSelector.css';
+
+// Silently catches render errors inside individual template cards
+class MiniPreviewErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch() { /* silently swallow */ }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#555', fontSize: '0.7rem', background: '#0a0a0a' }}>
+          PREVIEW UNAVAILABLE
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 interface TemplateSelectorProps {
   onSelectTemplate: (templateName: string) => void;
@@ -112,7 +132,9 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelectTemp
                     {/* Render the actual React template component scaled down inside a card */}
                     <div className="mini-preview-container">
                       <div className="mini-preview-scale">
-                        <TemplateRenderer data={previewData} isEditMode={false} />
+                        <MiniPreviewErrorBoundary key={tpl.key}>
+                          <TemplateRenderer data={previewData} isEditMode={false} />
+                        </MiniPreviewErrorBoundary>
                       </div>
                     </div>
                     
